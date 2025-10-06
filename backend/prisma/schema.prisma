@@ -1,0 +1,118 @@
+//Prisma schema file for PostgreSQL.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// Model for users (Admins and Technicians)
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  firstName   String
+  lastName    String
+  password    String
+  role        Role         @default(TECHNICIAN)
+  inspections Inspection[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// Model for the physical buildings on campus
+model Building {
+  id             String          @id @default(cuid())
+  name           String          @unique
+  location       String?
+  checklistItems ChecklistItem[]
+  inspections    Inspection[]
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+// Model for a single item within a building's checklist
+model ChecklistItem {
+  id        String             @id @default(cuid())
+  question  String
+  type      ChecklistItemType
+  
+  buildingId String
+  building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  
+  answers    InspectionAnswer[]
+
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+// Model for a single inspection event, linking a user, a building, and a date
+model Inspection {
+  id          String             @id @default(cuid())
+  date        DateTime           @default(now())
+  
+  userId      String
+  user        User               @relation(fields: [userId], references: [id])
+  
+  buildingId  String
+  building    Building           @relation(fields: [buildingId], references: [id])
+  
+  answers     InspectionAnswer[]
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+// Model for a specific answer to a checklist item within an inspection
+model InspectionAnswer {
+  id              String         @id @default(cuid())
+  
+  numericAnswer   Float?
+  booleanAnswer   Boolean?
+  textAnswer      String?
+
+  inspectionId    String
+  inspection      Inspection     @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+
+  checklistItemId String
+  checklistItem   ChecklistItem  @relation(fields: [checklistItemId], references: [id])
+
+  issue           Issue?
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+// Model for a flagged issue reported by a technician
+model Issue {
+  id                 String           @id @default(cuid())
+  comment            String
+  resolved           Boolean          @default(false)
+  
+  inspectionAnswerId String           @unique
+  inspectionAnswer   InspectionAnswer @relation(fields: [inspectionAnswerId], references: [id], onDelete: Cascade)
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+}
+
+
+// --- Enums for predefined types ---
+
+enum Role {
+  ADMIN
+  TECHNICIAN
+}
+
+enum ChecklistItemType {
+  NUMERIC
+  BOOLEAN
+  TEXT
+}

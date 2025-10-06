@@ -7,7 +7,7 @@ app.use(express.json());
 
 //db connection
 pool.connect()
-  .then(() => console.log('Connected to the database'))
+  .then(() => console.log('Connected to the database.'))
   .catch(err => console.error('Database connection error', err.stack));
 
 // test route
