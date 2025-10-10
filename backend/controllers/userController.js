@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../generated/prisma');
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -36,7 +36,7 @@ async function getUserById(req, res){
     try {
         const { id } = req.params;
         const user = await prisma.user.findUnique({
-            where: { id: parseInt(id) }
+            where: { id: id }
         });
         if (!user) {
             return res.status(404).send({error: 'User not found'});
@@ -64,7 +64,7 @@ async function deleteUser(req, res){
     try {
         const { id } = req.params;
         const deletedUser = await prisma.user.update({
-            where: { id: parseInt(id) },
+            where: { id: id },
             data: { isActive: false }
         });
         return res.status(200).json(deletedUser);
