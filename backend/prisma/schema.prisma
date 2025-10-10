@@ -2,7 +2,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+   output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,13 +17,16 @@ model User {
   id          String       @id @default(cuid())
   email       String       @unique
   firstName   String
-  lastName    String
+  lastName    String?
   password    String
   role        Role         @default(TECHNICIAN)
+  isActive    Boolean      @default(true)
   inspections Inspection[]
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+
+  @@map("user")
 }
 
 // Model for the physical buildings on campus
@@ -36,6 +39,8 @@ model Building {
 
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+
+  @@map("buildings")
 }
 
 // Model for a single item within a building's checklist
@@ -51,6 +56,8 @@ model ChecklistItem {
 
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
+
+  @@map("checklist_items")
 }
 
 // Model for a single inspection event, linking a user, a building, and a date
@@ -68,6 +75,8 @@ model Inspection {
 
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
+
+  @@map("inspection")
 }
 
 // Model for a specific answer to a checklist item within an inspection
@@ -88,6 +97,8 @@ model InspectionAnswer {
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+
+  @@map("inspection_answers")
 }
 
 // Model for a flagged issue reported by a technician
@@ -101,6 +112,8 @@ model Issue {
 
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
+
+  @@map("issues")
 }
 
 

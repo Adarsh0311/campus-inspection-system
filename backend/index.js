@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const { pool } = require('./connection');
+const userRoute = require('./routes/userRoute');
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -14,6 +15,10 @@ pool.connect()
 app.get('/', (req, res) => {
   res.send('Campus Inspection System API is running...');
 });
+
+
+// Routes
+app.use('/api/users', userRoute);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
