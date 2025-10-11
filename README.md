@@ -29,7 +29,7 @@ cd campus-inspection-system/backend
 
 ### 2. Install Dependencies
 ```bash
- npm install
+npm install
 ````
 
 ### 3. Database Setup
