@@ -7,14 +7,14 @@ A Node.js backend API for the Campus Inspection System built with Express.js, Pr
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Database ORM**: Prisma
-- **Database**: SQL (PostgresSQL)
+- **Database**: SQL (PostgreSQL)
 - **Package Manager**: npm
 
 ## Prerequisites
 
 - Node.js (version v20.19.4)
 - npm (version 11.5.2)
-- Database (PostgresSQL)
+- Database (PostgreSQL)
 
 ## Installation & Setup
 
