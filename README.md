@@ -25,12 +25,6 @@ git clone [https://github.com/adarsh0311/campus-inspection-system.git](https://g
 
 # Navigate to the backend directory
 cd campus-inspection-system/backend
-````
-
-### 2. Install Dependencies
-```bash
-npm install
-````
 
 ### 3. Database Setup
 - Create a .env file in the backend directory. Prisma uses this file for the database connection string
