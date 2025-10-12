@@ -36,8 +36,8 @@ async function handleGetBuildingById(req, res) {
         }
         res.status(200).json(building);
     } catch (error) {
-        console.error('Error fetching buildings:', error);
-        res.status(500).json({error: 'An error occurred while fetching buildings.'});
+        console.error('Error fetching building:', error);
+        res.status(500).json({error: 'An error occurred while fetching the building.'});
     }
 }
 
