@@ -48,14 +48,17 @@ async function loginUser(req, res) {
     });
 
     if (!user) {
-        return res.status(400).json({ error: 'Invalid email.' });
+        return res.status(400).json({ error: 'Invalid credentials.' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = user && await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        return res.status(400).json({ error: 'Invalid password.' });
+        return res.status(400).json({ error: 'Invalid credentials.' });
     }
 
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ error: 'JWT_SECRET environment variable is not defined.' });
+    }
     const token = jwt.sign(
         { userId: user.id, role: user.role },
         process.env.JWT_SECRET,
