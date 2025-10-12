@@ -1,25 +1,24 @@
 const express = require('express');
 const app = express();
-const { pool } = require('./connection');
 const userRoute = require('./routes/userRoute');
+const buildingRoute = require('./routes/buildingRoute');
+const PORT = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-//db connection
-pool.connect()
-  .then(() => console.log('Connected to the database.'))
-  .catch(err => console.error('Database connection error', err.stack));
 
 // test route
 app.get('/', (req, res) => {
-  res.send('Campus Inspection System API is running...');
+    res.send('Campus Inspection System API is running...');
 });
 
 
 // Routes
 app.use('/api/users', userRoute);
+app.use('/api/buildings', buildingRoute);
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(PORT, () => {
+    console.log('Server is running on port: ' + PORT);
 });
