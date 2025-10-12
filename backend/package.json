@@ -15,7 +15,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "prisma": "^6.17.0"
