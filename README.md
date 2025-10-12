@@ -19,13 +19,12 @@ A Node.js backend API for the Campus Inspection System built with Express.js, Pr
 ## Installation & Setup
 
 ### 1. Clone the Repository
-```bash
-# Corrected the typo from 'htts' to 'https'
+```
 git clone [https://github.com/adarsh0311/campus-inspection-system.git](https://github.com/adarsh0311/campus-inspection-system.git)
 
 # Navigate to the backend directory
 cd campus-inspection-system/backend
-
+```
 ### 3. Database Setup
 - Create a .env file in the backend directory. Prisma uses this file for the database connection string
 ```
