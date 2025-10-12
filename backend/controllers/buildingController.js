@@ -61,7 +61,6 @@ async function handleUpdateBuilding(req, res) {
         /**
          * @type {UpdateBuildingDto}
          */
-        const updateData = req.body;
 
         const updatedBuilding = await buildingService.updateBuilding(id, updateData);
         if (!updatedBuilding) {
