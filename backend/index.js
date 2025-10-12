@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
+
+const PORT = 3000;
+
 const userRoute = require('./routes/userRoute');
 const buildingRoute = require('./routes/buildingRoute');
-const PORT = 3000;
+const authRoute = require('./routes/authRoute');
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -16,6 +19,7 @@ app.get('/', (req, res) => {
 
 
 // Routes
+app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/buildings', buildingRoute);
 
