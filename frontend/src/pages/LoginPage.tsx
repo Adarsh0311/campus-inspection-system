@@ -1,54 +1,68 @@
-// @ts-ignore
-import React, {useState} from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
+import { useNavigate } from 'react-router-dom';
 
-function LoginPage() {
-// We use useState to manage the state for our form inputs
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+const LoginPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const { login } = useAuth(); // Get the login function from our context
+    const navigate = useNavigate();
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        //TODO: implement login logic later
-    }
+        setError(''); // Clear previous errors
+        try {
+            await login(email, password);
+            navigate('/dashboard'); // Redirect to a dashboard page on success
+        } catch (err) {
+            setError('Failed to log in. Please check your credentials.');
+            console.error(err);
+        }
+    };
 
     return (
-        <Container fluid className="min-vh-100 d-flex align-items-center justify-content-center">
-            <Row>
-                <Col md={6} lg={4}>
-                    <Card>
-                        <Card.Body>
-                            <h2 className="text-center mb-4">Login</h2>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Email:</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Password:</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Button variant="primary" type="submit" className="w-100">
-                                    Login
-                                </Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+        <div className="row justify-content-center">
+            <div className="col-md-6 col-lg-4">
+                <div className="card shadow-sm">
+                    <div className="card-body">
+                        <h3 className="card-title text-center mb-4">Sign In</h3>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        <form onSubmit={handleSubmit}>
+                            {/* Form inputs are the same as before */}
+                            <div className="mb-3">
+                                <label htmlFor="email" className="form-label">Email Address</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="password" className="form-label">Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="d-grid">
+                                <button type="submit" className="btn btn-primary">
+                                    Sign In
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
-}
+};
 
 export default LoginPage;

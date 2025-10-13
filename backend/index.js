@@ -7,6 +7,11 @@ const userRoute = require('./routes/userRoute');
 const buildingRoute = require('./routes/buildingRoute');
 const authRoute = require('./routes/authRoute');
 
+const cors = require('cors');
+
+//cors
+app.use(cors());
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
