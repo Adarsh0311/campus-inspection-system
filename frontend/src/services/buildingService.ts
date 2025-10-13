@@ -25,6 +25,18 @@ interface CreateBuildingPayload {
     checklistItems: ChecklistItemPayload[];
 }
 
+interface ChecklistItem {
+    id: string;
+    question: string;
+    type: string;
+    buildingId: string;
+
+}
+
+interface BuildingWithChecklist extends Building {
+    checklistItems: ChecklistItem[];
+}
+
 const getAuthHeader = () => {
     const user: User | null = JSON.parse(localStorage.getItem('user') || 'null');
     if (user && user.token) {
@@ -42,8 +54,18 @@ const createBuildingWithChecklist = (payload: CreateBuildingPayload) => {
     return axios.post<Building>(API_URL, payload, { headers: getAuthHeader() });
 };
 
+const getBuildingById = (id: string) => {
+    return axios.get<BuildingWithChecklist>(`${API_URL}${id}`, { headers: getAuthHeader() });
+};
+
+const updateBuilding = (id: string, payload: any) => { // 'any' for now, we'll build this payload
+    return axios.put<BuildingWithChecklist>(`${API_URL}${id}`, payload, { headers: getAuthHeader() });
+};
+
 
 export default {
     getAllBuildings,
-    createBuildingWithChecklist, // Export the new function
+    createBuildingWithChecklist,
+    getBuildingById,
+    updateBuilding,
 };

@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import BuildingManagementPage from './pages/BuildingManagementPage';
 import AddBuildingPage from './pages/AddBuildingPage';
+import EditBuildingPage from './pages/EditBuildingPage';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/buildings" element={<BuildingManagementPage />} />
                     <Route path="/buildings/new" element={<AddBuildingPage />} />
+                    <Route path="/buildings/edit/:id" element={<EditBuildingPage />} />
                 </Route>
             </Routes>
         </Layout>

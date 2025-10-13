@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import buildingService from '../services/buildingService';
+import { Link } from 'react-router-dom';
 
 
 
@@ -80,7 +81,9 @@ const BuildingManagementPage = () => {
                         <td>{building.name}</td>
                         <td>{building.location || 'N/A'}</td>
                         <td>
-                            <button className="btn btn-sm btn-secondary">Edit</button>
+                            <Link to={`/buildings/edit/${building.id}`} className="btn btn-sm btn-secondary">
+                                Edit
+                            </Link>
                         </td>
                     </tr>
                 ))}
