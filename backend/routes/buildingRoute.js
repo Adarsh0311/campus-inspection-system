@@ -6,6 +6,8 @@ const {
     handleGetAllBuildings, handleUpdateBuilding, handleDeleteBuilding
 } = require('../controllers/buildingController');
 
+
+
 router.route('/')
     .post(handleCreateBuilding)
     .get(handleGetAllBuildings);
