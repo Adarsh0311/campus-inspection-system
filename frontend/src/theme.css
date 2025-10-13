@@ -1,0 +1,25 @@
+/*  dark university green */
+:root {
+    --university-green: #004d40;
+    --university-green-hover: #00382e;
+}
+
+body {
+    background-color: #f8f9fa; /* A light grey for the background */
+}
+
+/* Style for the header we will create next */
+.navbar-custom {
+    background-color: var(--university-green);
+}
+
+/* Style for buttons to match the theme */
+.btn-primary {
+    background-color: var(--university-green);
+    border-color: var(--university-green);
+}
+
+.btn-primary:hover {
+    background-color: var(--university-green-hover);
+    border-color: var(--university-green-hover);
+}

@@ -9,6 +9,11 @@ const authRoute = require('./routes/authRoute');
 
 const { authMiddleware, adminMiddleware } = require('./middleware/authMiddleware');
 
+const cors = require('cors');
+
+//cors
+app.use(cors());
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
