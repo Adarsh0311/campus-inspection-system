@@ -36,6 +36,7 @@ const LoginPage = () => {
                                     type="email"
                                     className="form-control"
                                     id="email"
+                                    name="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required

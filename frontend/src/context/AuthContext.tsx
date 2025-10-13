@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 import authService from '../services/authService';
 
 // Define the shape of the user object we'll store
-interface User {
+export interface User {
     email: string;
     token: string;
 }
