@@ -3,6 +3,7 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <h3 class="card-title text-center mb-4">Sign In</h3>
+          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
         <form (ngSubmit)="handleSubmit()">
           <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
@@ -20,3 +21,5 @@
     </div>
   </div>
 </div>
+
+
