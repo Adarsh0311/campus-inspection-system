@@ -12,5 +12,6 @@ export const appConfig: ApplicationConfig = {
     // Add these lines
     provideHttpClient(),
     importProvidersFrom(FormsModule)
+
   ]
 };
