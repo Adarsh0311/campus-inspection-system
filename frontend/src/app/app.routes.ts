@@ -9,22 +9,25 @@ import { adminRoleGuard } from './guards/admin-role.guard';
 
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, adminRoleGuard] },// You can add route guards here,
+  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, adminRoleGuard], title: 'Dashboard' },// You can add route guards here,
   {
     path: 'buildings',
     component: BuildingManagementComponent,
     canActivate: [authGuard, adminRoleGuard],
+    title: 'Building Management'
   },
   {
     path: 'buildings/new',
     component: AddBuildingComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    title: 'Add Building'
   },
   {
     path: 'buildings/edit/:id', // The ':id' is a route parameter
     component: EditBuildingComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    title: 'Edit Building'
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
 ];

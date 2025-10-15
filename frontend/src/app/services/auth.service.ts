@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import {environment} from "../environment.development";
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from "../environment.development";
+
+
+export interface UserPayload {
+  userId: string;
+  role: 'ADMIN' | 'TECHNICIAN';
+  email: string;
+  firstName: string;
+  lastName: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +19,32 @@ export class AuthService {
 
   private apiUrl = environment.baseUrl + '/auth';
 
-  constructor(private http: HttpClient) { }
+  // BehaviorSubject to hold the current user state
+  private currentUserSubject = new BehaviorSubject<UserPayload | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable(); // The public observable components can subscribe to
+
+
+  constructor(private http: HttpClient) {
+    // When the service is first created, check if a user is already logged in
+    const token = this.getToken();
+    if (token && !this.isTokenExpired(token)) {
+      this.currentUserSubject.next(this.decodeToken(token));
+    }
+  }
+
+  public get currentUserValue(): UserPayload | null {
+    return this.currentUserSubject.value;
+  }
+
+  private decodeToken(token: string): UserPayload | null {
+    try {
+      // Decode the middle part (payload) of the JWT
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return { userId: payload.userId, role: payload.role, email: payload.email, firstName: payload.firstName, lastName: payload.lastName };
+    } catch (e) {
+      return null;
+    }
+  }
 
   login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password })
@@ -20,6 +54,8 @@ export class AuthService {
         tap(response => {
           if (response.token) {
             localStorage.setItem('authToken', response.token);
+            // When login is successful, update the subject with the new user data
+            this.currentUserSubject.next(this.decodeToken(response.token));
           }
         })
       );
@@ -27,6 +63,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken');
+    // On logout, update the subject to null
+    this.currentUserSubject.next(null);
   }
 
   getToken(): string | null {

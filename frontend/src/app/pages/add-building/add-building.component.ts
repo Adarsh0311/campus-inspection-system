@@ -44,6 +44,15 @@ export class AddBuildingComponent {
 
   // Method to save the entire building
   handleSaveBuilding(): void {
+    if (!this.buildingName.trim()) {
+      alert('Building name and location are required.');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to create this building?')) {
+      return;
+    }
+
     const payload: CreateBuildingPayload = {
       name: this.buildingName,
       location: this.buildingLocation,

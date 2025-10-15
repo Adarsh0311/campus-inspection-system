@@ -31,7 +31,7 @@ async function loginUser(req, res) {
         return res.status(500).json({ error: 'JWT_SECRET environment variable is not defined.' });
     }
     const token = jwt.sign(
-        { userId: user.id, role: user.role },
+        { userId: user.id, email: user.email,  role: user.role, firstName: user.firstName, lastName: user.lastName },
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
     );
