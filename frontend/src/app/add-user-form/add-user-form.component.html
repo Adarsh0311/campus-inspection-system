@@ -1,0 +1,38 @@
+<div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<div class="container">
+    <form (ngSubmit)="handleSubmit()" #addUserForm="ngForm">
+        <div class="row">
+            <div class="mb-3 col-md-6 col-lg-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="firstName"
+                    required>
+            </div>
+            <div class="mb-3 col-md-6 col-lg-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="lastName" required>
+            </div>
+            <div class="mb-3 col-md-6 col-lg-6">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" [(ngModel)]="email" required email autocomplete="email">
+            </div>
+            <div class="mb-3 col-md-6 col-lg-6">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" placeholder="provide a temporary password" autocomplete="new-password"
+                    class="form-control" [(ngModel)]="password" required>
+            </div>
+            <div class="mb-3 col-md-6 col-lg-6">
+                <label for="role" class="form-label">Role</label>
+                <select id="role" name="role" class="form-select" [(ngModel)]="role" required>
+                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                </select>
+            </div>
+        </div>
+        <!-- <div class="col-lg-3 col-md-3 col-sm-6"> -->
+        <!-- <small class="form-text text-muted">Default password will be set to "password". Users should change their
+                password upon first login.</small> -->
+        <button type="submit" class="btn btn-primary" [disabled]="addUserForm.invalid">Create User</button>
+        <!-- </div> -->
+    </form>
+</div>

@@ -1,3 +1,35 @@
-<h2>Dashboard</h2>
-<p>Welcome! You are logged in.</p>
-<button class="btn btn-secondary" (click)="logout()">Logout</button>
+<h2>Admin Portal</h2>
+<p>Manage system settings, users, and buildings from here.</p>
+
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'buildings'" (click)="setActiveTab('buildings')" href="javascript:void(0)">Building Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'addUser'" (click)="setActiveTab('addUser')" href="javascript:void(0)">Add User</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" href="javascript:void(0)">Profile Management</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body" [ngSwitch]="activeTab">
+    <div *ngSwitchCase="'buildings'">
+      <h5 class="card-title">Building Management</h5>
+      <p class="card-text">View, add, edit, and delete buildings and their inspection checklists.</p>
+      <a routerLink="/buildings" class="btn btn-primary">Go to Building Management</a>
+    </div>
+
+    <div *ngSwitchCase="'addUser'">
+      <app-add-user-form></app-add-user-form>
+    </div>
+
+    <div *ngSwitchCase="'profile'">
+      <h5 class="card-title">Profile Management</h5>
+      <p>This feature is coming soon.</p>
+    </div>
+  </div>
+</div>

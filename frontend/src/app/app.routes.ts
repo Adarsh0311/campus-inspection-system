@@ -5,15 +5,16 @@ import {authGuard} from "./guards/auth.guard";
 import {BuildingManagementComponent} from "./pages/building-management/building-management.component";
 import {AddBuildingComponent} from "./pages/add-building/add-building.component";
 import {EditBuildingComponent} from "./pages/edit-building/edit-building.component";
+import { adminRoleGuard } from './guards/admin-role.guard';
 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },// You can add route guards here,
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, adminRoleGuard] },// You can add route guards here,
   {
     path: 'buildings',
     component: BuildingManagementComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminRoleGuard],
   },
   {
     path: 'buildings/new',
