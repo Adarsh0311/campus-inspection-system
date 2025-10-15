@@ -28,10 +28,13 @@
   <tr *ngFor="let building of buildings">
     <td>{{ building.name }}</td>
     <td>{{ building.location || 'N/A' }}</td>
-    <td>
-      <a [routerLink]="['/buildings/edit', building.id]" class="btn btn-sm btn-secondary">
+    <td style="width: 200px;">
+      <button style="width: 60px" class="btn btn-sm btn-secondary m-2" [routerLink]="['/buildings/edit', building.id]" >
         Edit
-      </a>
+      </button>
+      <button style="width: 60px" class="btn btn-sm btn-danger" (click)="onDeleteBuilding(building.id, building.name)">
+        Delete
+      </button>
     </td>
   </tr>
   </tbody>

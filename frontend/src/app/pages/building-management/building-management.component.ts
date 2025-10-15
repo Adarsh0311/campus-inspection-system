@@ -44,4 +44,21 @@ export class BuildingManagementComponent implements OnInit {
     });
   }
 
+  onDeleteBuilding(id: string, name: string): void {
+    // Use the browser's confirm dialog for a simple confirmation
+    if (confirm(`Are you sure you want to delete the building "${name}"?`)) {
+      this.buildingService.deleteBuilding(id).subscribe({
+        next: () => {
+          // On success, filter out the deleted building from the local array
+          // to instantly update the UI without a full reload.
+          this.buildings = this.buildings.filter(b => b.id !== id);
+        },
+        error: (err) => {
+          this.errorMessage = 'Failed to delete building.';
+          console.error(err);
+        }
+      });
+    }
+  }
+
 }

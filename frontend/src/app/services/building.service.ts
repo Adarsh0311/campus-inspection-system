@@ -36,5 +36,9 @@ export class BuildingService {
     return this.http.put<Building>(`${this.apiUrl}/${id}`, payload, { headers: this.getAuthHeaders() });
   }
 
+  deleteBuilding(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
 
 }
