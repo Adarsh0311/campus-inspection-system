@@ -54,7 +54,7 @@ Follow these steps to get the full application running on your local machine.
 # backend/.env
 # Replace 'username' and 'password' with your actual PostgreSQL credentials.
 
-DATABASE_URL="postgresql://username:password@localhost:5432/campus_inspection_db"
+DATABASE_URL="postgres://username:password@localhost:5432/campus_inspection_db"
 JWT_SECRET="your_jwt_secret_key"
 
 ```
