@@ -21,4 +21,16 @@ export class UserService {
   createUser(userData: { firstName: string; lastName: string; email: string; }): Observable<any> {
     return this.http.post(`${this.apiUrl}`, userData, { headers: this.getAuthHeaders() });
   }
+
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count`, { headers: this.getAuthHeaders() });
+  }
+
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`, { headers: this.getAuthHeaders() });
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}`, { headers: this.getAuthHeaders() });
+  }
 }

@@ -86,6 +86,12 @@ async function deleteUser(req, res){
 }
 
 
+async function getUsersCount(req, res) {
+    const count = await prisma.user.count();
+    return res.status(200).send(count);
+}
+
+
 async function existsByEmail(email) {
     const user = await prisma.user.findUnique({
         where: { email }
@@ -97,4 +103,4 @@ async function existsByEmail(email) {
 
 
 
-module.exports = {deleteUser, getUserById, getUsers, updateUser, registerUser};
+module.exports = {deleteUser, getUserById, getUsers, updateUser, registerUser, getUsersCount};

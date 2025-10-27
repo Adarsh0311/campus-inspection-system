@@ -6,6 +6,7 @@ import {BuildingManagementComponent} from "./pages/building-management/building-
 import {AddBuildingComponent} from "./pages/add-building/add-building.component";
 import {EditBuildingComponent} from "./pages/edit-building/edit-building.component";
 import { adminRoleGuard } from './guards/admin-role.guard';
+import {AddUserFormComponent} from "./add-user-form/add-user-form.component";
 
 
 export const routes: Routes = [
@@ -29,5 +30,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'Edit Building'
   },
+
+  {
+    path: 'add-user',
+    component: AddUserFormComponent,
+    canActivate: [authGuard, adminRoleGuard],
+    title: 'Add User'
+  },
+
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
 ];

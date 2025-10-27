@@ -1,7 +1,14 @@
 <div class="row justify-content-center align-items-center" style="height: 90vh;">
   <div class="col-md-6 col-lg-4">
     <div class="card shadow-sm">
+
+        <div class=" text-center bg-white">
+          <img src="assets/NWMSU_logo.png" alt="NWMSU Logo" height="100" width="275"/>
+        </div>
+
+
       <div class="card-body">
+
         <h3 class="card-title text-center mb-4">Sign In</h3>
           <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
         <form (ngSubmit)="handleSubmit()">

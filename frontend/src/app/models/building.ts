@@ -10,6 +10,8 @@ export interface Building {
   name: string;
   location?: string;
   checklistItems?: ChecklistItem[]; // A building can have checklist items
+  createdAt: string;
+  updatedAt: string;
 }
 
 // This is the payload for creating a new building with its checklist
