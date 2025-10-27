@@ -1,47 +1,86 @@
-# Campus Inspection System - Backend API
+# Campus Inspection System
 
-A Node.js backend API for the Campus Inspection System built with Express.js, Prisma ORM, and a PostgreSQL database.
+This project is a full-stack web application designed to digitize and streamline campus facility inspections, replacing a manual paper-based workflow.
+
+The backend is a Node.js API built with Express.js and Prisma, connected to a PostgreSQL database. The frontend is a single-page application built with Angular.
+
+---
 
 ## Tech Stack
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database ORM**: Prisma
-- **Database**: SQL (PostgreSQL)
-- **Package Manager**: npm
+| Area | Technology |
+| :--- | :--- |
+| **Backend** | Node.js, Express.js, Prisma ORM, PostgreSQL |
+| **Frontend** | Angular, TypeScript, Bootstrap |
+| **Package Manager**| npm |
+
+---
 
 ## Prerequisites
 
-- Node.js (version v20.19.4)
-- npm (version 11.5.2)
-- Database (PostgreSQL)
+Before you begin, ensure you have the following installed on your local machine:
+- **Node.js** (v20.x or later)
+- **npm** (v10.x or later)
+- **Angular CLI** (`npm install -g @angular/cli`)
+- **PostgreSQL**
 
-## Installation & Setup
+---
 
-### 1. Clone the Repository
+## Getting Started
+
+Follow these steps to get the full application running on your local machine.
+
+### **Step 1: Clone the Repository**
+```bash
+     git clone [https://github.com/adarsh0311/campus-inspection-system.git](https://github.com/adarsh0311/campus-inspection-system.git)
+     cd campus-inspection-system
 ```
-git clone [https://github.com/adarsh0311/campus-inspection-system.git](https://github.com/adarsh0311/campus-inspection-system.git)
 
-# Navigate to the backend directory
-cd campus-inspection-system/backend
-```
-### 3. Database Setup
+
+### Step 2: Backend Setup
+- Navigate to the backend directory and install dependencies:
+
+```Bash
+  cd backend
+  npm install
+````
+
+
+
+#### Set up the database connection:
+
 - Create a .env file in the backend directory. Prisma uses this file for the database connection string
 ```
 # backend/.env
 # Replace 'username' and 'password' with your actual PostgreSQL credentials.
 
-DATABASE_URL="postgresql://username:password@localhost:5432/campus_inspection_db"
-```
-### 4. Run Database Migration
-- This command will create the database if it doesn't exist and run all migrations to create your tables.
-```bash
-npx prisma migrate dev
+DATABASE_URL="postgres://username:password@localhost:5432/campus_inspection_db"
+JWT_SECRET="your_jwt_secret_key"
+
 ```
 
-### 5. Start the Development Server
+
+- Run the database migration: This command will apply the schema to your database, creating all the necessary tables.
+
+```Bash
+  npx prisma migrate dev
+````
+
+#### Start the Development Server
 ```bash
-npm start
+  npm start
 ```
 
-- The server should now be running at  http://localhost:3000
+
+### Step 3: Frontend Setup
+Navigate to the frontend directory from the root and install dependencies:
+```bash
+  cd frontend
+  npm install
+```
+
+### Running the Application
+```bash
+  ng serve
+```
+This will start the Angular development server. The application will be accessible at http://localhost:4200.
