@@ -4,13 +4,18 @@ import {BuildingService} from "../../services/building.service";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { LoadingSpinnerComponent } from '../../components/loading-spinner/loading-spinner.component';
+import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-building-management',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule,   PageHeaderComponent, 
+    LoadingSpinnerComponent, 
+    EmptyStateComponent],
   templateUrl: './building-management.component.html',
-  styleUrl: './building-management.component.css'
+  styleUrls: ['./building-management.component.css']
 })
 export class BuildingManagementComponent implements OnInit {
   buildings: Building[] = [];
