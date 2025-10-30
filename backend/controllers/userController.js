@@ -26,7 +26,8 @@ async function registerUser(req, res) {
                 firstName,
                 lastName,
                 role
-            }
+            },
+            select: userResponse
         });
         return res.status(201).json({ message: 'User registered successfully', userId: newUser.id });
     } catch (error) {
@@ -37,7 +38,9 @@ async function registerUser(req, res) {
 
 async function getUsers(req, res){
     try {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany(
+            {select: userResponse}
+        );
         return res.status(200).json(users);
     } catch (error) {
         return res.status(400).send({error: error.message});
@@ -48,7 +51,8 @@ async function getUserById(req, res){
     try {
         const { id } = req.params;
         const user = await prisma.user.findUnique({
-            where: { id: id }
+            where: { id: id },
+            select: userResponse
         });
         if (!user) {
             return res.status(404).send({error: 'User not found'});
@@ -100,7 +104,16 @@ async function existsByEmail(email) {
 }
 
 
-
+const userResponse =  {
+    id: true,
+    email: true,
+    firstName: true,
+    lastName: true,
+    role: true,
+    isActive: true,
+    createdAt: true,
+    updatedAt: true
+};
 
 
 module.exports = {deleteUser, getUserById, getUsers, updateUser, registerUser, getUsersCount};

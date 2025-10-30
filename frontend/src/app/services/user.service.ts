@@ -33,4 +33,14 @@ export class UserService {
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${userId}`, { headers: this.getAuthHeaders() });
   }
+   updateUser(id: string, userData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, userData, { headers: this.getAuthHeaders() });
+  }
+  resetPassword(id: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/reset-password`, {}, { headers: this.getAuthHeaders() });
+  }
+
+  updateUserStatus(id: string, status: string): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${id}/status`, { status }, { headers: this.getAuthHeaders() });
+  }
 }

@@ -1,0 +1,178 @@
+.form-label-sm {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-2);
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check-input:checked {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.form-check-input:focus {
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.btn-group-sm .btn {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+}
+
+.table-enhanced tbody tr:hover {
+  background-color: var(--gray-50);
+  transition: background-color var(--transition-fast);
+}
+
+.input-group-text {
+  background-color: var(--gray-100);
+  border-color: var(--gray-300);
+  color: var(--gray-600);
+}
+
+.card-footer {
+  background-color: var(--gray-50) !important;
+  border-top: 1px solid var(--gray-200);
+}
+
+.alert-dismissible .btn-close {
+  padding: var(--spacing-3);
+}
+
+/* Modal enhancements */
+.modal-header {
+  background-color: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.modal-footer {
+  background-color: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+}
+
+.modal-body .alert {
+  margin-bottom: var(--spacing-4);
+}
+
+/* Form switch styling */
+.form-check-label {
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.form-switch .form-check-input {
+  width: 2em;
+  height: 1em;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+/* Badge styling */
+.badge {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+.badge.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--danger-color) !important;
+}
+
+.badge.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .btn-group-sm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-group-sm .btn {
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 2px;
+  }
+  
+  .table-responsive {
+    font-size: var(--font-size-sm);
+  }
+  
+  .avatar-circle {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 576px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  
+  .btn-group {
+    justify-content: center;
+  }
+  
+  .modal-dialog {
+    margin: var(--spacing-2);
+  }
+}
+
+/* Loading and hover states */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Form validation styling */
+.form-control:invalid {
+  border-color: var(--danger-color);
+}
+
+.form-control:valid {
+  border-color: var(--success-color);
+}
+
+.text-danger {
+  color: var(--danger-color) !important;
+}

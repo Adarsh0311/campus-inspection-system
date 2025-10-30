@@ -7,35 +7,25 @@ import {AddBuildingComponent} from "./pages/add-building/add-building.component"
 import {EditBuildingComponent} from "./pages/edit-building/edit-building.component";
 import { adminRoleGuard } from './guards/admin-role.guard';
 import {AddUserFormComponent} from "./add-user-form/add-user-form.component";
+import {UserManagementComponent} from "./pages/user-management/user-management.component";
 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, adminRoleGuard], title: 'Dashboard' },// You can add route guards here,
-  {
-    path: 'buildings',
-    component: BuildingManagementComponent,
-    canActivate: [authGuard, adminRoleGuard],
-    title: 'Building Management'
-  },
-  {
-    path: 'buildings/new',
-    component: AddBuildingComponent,
-    canActivate: [authGuard],
-    title: 'Add Building'
-  },
-  {
-    path: 'buildings/edit/:id', // The ':id' is a route parameter
-    component: EditBuildingComponent,
-    canActivate: [authGuard],
-    title: 'Edit Building'
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, adminRoleGuard], title: 'Dashboard' },
+  { path: 'buildings',
+    children: [
+      { path: '', component: BuildingManagementComponent, canActivate: [authGuard, adminRoleGuard], title: 'Building Management'},
+      { path: 'new', component: AddBuildingComponent, canActivate: [authGuard], title: 'Add Building' },
+      { path: 'edit/:id', component: EditBuildingComponent, canActivate: [authGuard], title: 'Edit Building'},
+    ]
   },
 
-  {
-    path: 'add-user',
-    component: AddUserFormComponent,
-    canActivate: [authGuard, adminRoleGuard],
-    title: 'Add User'
+  { path: 'users',
+    children: [
+      { path: '', component: UserManagementComponent, canActivate: [authGuard, adminRoleGuard], title: 'User Management'} ,
+      { path: 'new', component: AddUserFormComponent, canActivate: [authGuard, adminRoleGuard], title: 'Add User'},
+    ]
   },
 
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
