@@ -1,45 +1,106 @@
-<div class="row">
-  <div class="col">
-    <h2>Building Management</h2>
+<!--<app-page-header-->
+<!--  title="Building Management"-->
+<!--  subtitle="Manage campus buildings and their inspection checklists">-->
+<!--</app-page-header>-->
+
+<div class="container">
+  <!-- Action Bar -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="h4 mb-0">Buildings Overview</h2>
+      <small class="text-muted">{{ buildings.length }} total buildings</small>
+    </div>
+    <a routerLink="/buildings/new" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>
+      Add New Building
+    </a>
   </div>
 
-  <div class="col" style="text-align: right;">
-      <a routerLink="/buildings/new" class="btn btn-primary">
-        + Add New Building
-      </a>
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    {{ errorMessage }}
   </div>
-</div>
 
+  <!-- Loading State -->
+  <app-loading-spinner
+    *ngIf="isLoading"
+    message="Loading buildings..."
+    [height]="300">
+  </app-loading-spinner>
 
-<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <!-- Buildings Table -->
+  <div *ngIf="!isLoading && buildings.length > 0" class="card">
+    <div class="table-responsive">
+      <table class="table table-enhanced mb-0">
+        <thead>
+          <tr>
+            <th>Building Name</th>
+            <th>Location</th>
+            <th>Checklist Items</th>
+            <th>Last Updated</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let building of buildings">
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="bg-opacity-10 rounded-circle p-2 me-3">
+                  <i class="bi bi-building text-primary"></i>
+                </div>
+                <div>
+                  <div class="fw-semibold">{{ building.name }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="text-muted" *ngIf="building.location; else noLocation">
+                <i class="bi bi-geo-alt me-1"></i>{{ building.location }}
+              </span>
+              <ng-template #noLocation>
+                <span class="text-muted fst-italic">No location specified</span>
+              </ng-template>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark">
+                {{ building.checklistItems?.length || 0 }} items
+              </span>
+            </td>
+            <td>
+              <small class="text-muted">{{ building.updatedAt | date:'short' }}</small>
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button
+                  class="btn btn-outline-secondary"
+                  [routerLink]="['/buildings/edit', building.id]"
+                  title="Edit building">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  (click)="onDeleteBuilding(building.id, building.name)"
+                  title="Delete building">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-
-<div *ngIf="isLoading">Loading buildings...</div>
-
-<table *ngIf="!isLoading && buildings.length > 0" class="table table-striped mt-3 table-bordered">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Location</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let building of buildings">
-    <td>{{ building.name }}</td>
-    <td>{{ building.location || 'N/A' }}</td>
-    <td style="width: 200px;">
-      <button style="width: 60px" class="btn btn-sm btn-secondary m-2" [routerLink]="['/buildings/edit', building.id]" >
-        Edit
-      </button>
-      <button style="width: 60px" class="btn btn-sm btn-danger" (click)="onDeleteBuilding(building.id, building.name)">
-        Delete
-      </button>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<div *ngIf="!isLoading && buildings.length === 0">
-  <p>No buildings found. Please add one.</p>
+  <!-- Empty State -->
+  <app-empty-state
+    *ngIf="!isLoading && buildings.length === 0"
+    title="No buildings found"
+    message="Get started by adding your first building to the system."
+    icon="bi-building">
+    <a routerLink="/buildings/new" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>
+      Add First Building
+    </a>
+  </app-empty-state>
 </div>

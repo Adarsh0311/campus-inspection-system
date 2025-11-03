@@ -1,35 +1,104 @@
-<h2>Admin Portal</h2>
-<p>Manage system settings, users, and buildings from here.</p>
+<app-page-header
+  title="Campus Inspection Dashboard"
+  subtitle="Overview of buildings, inspections, and system status">
+</app-page-header>
 
-<div class="card">
-  <div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs">
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="activeTab === 'buildings'" (click)="setActiveTab('buildings')" href="javascript:void(0)">Building Management</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="activeTab === 'addUser'" (click)="setActiveTab('addUser')" href="javascript:void(0)">Add User</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" href="javascript:void(0)">Profile Management</a>
-      </li>
-    </ul>
+<div class="container">
+  <!-- Quick Actions -->
+  <div class="row g-4 mb-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-opacity-10">
+          <h5 class="mb-0">
+            <i class="bi bi-lightning me-2 text-primary"></i>
+            Quick Actions
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <a routerLink="/buildings/new" class="btn btn-outline-primary w-100 py-3">
+                <i class="bi bi-plus-circle d-block mb-2" style="font-size: 1.5rem;"></i>
+                Add Building
+              </a>
+            </div>
+            <div class="col-md-3">
+              <a routerLink="/users/new" class="btn btn-outline-success w-100 py-3">
+                <i class="bi bi-person-plus d-block mb-2" style="font-size: 1.5rem;"></i>
+                Add User
+              </a>
+            </div>
+            <div class="col-md-3">
+              <a routerLink="/buildings" class="btn btn-outline-info w-100 py-3">
+                <i class="bi bi-list-ul d-block mb-2" style="font-size: 1.5rem;"></i>
+                Manage Buildings
+              </a>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-warning w-100 py-3" (click)="generateReport()">
+                <i class="bi bi-file-earmark-text d-block mb-2" style="font-size: 1.5rem;"></i>
+                Generate Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Statistics Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+               style="width: 60px; height: 60px;">
+            <i class="bi bi-building text-primary" style="font-size: 1.5rem;"></i>
+          </div>
+          <h3 class="h2 mb-1 text-primary">{{ totalBuildings }}</h3>
+          <p class="text-muted mb-0">Total Buildings</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+               style="width: 60px; height: 60px;">
+            <i class="bi bi-check-circle text-success" style="font-size: 1.5rem;"></i>
+          </div>
+          <h3 class="h2 mb-1 text-success">{{ completedInspections }}</h3>
+          <p class="text-muted mb-0">Completed Inspections</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+               style="width: 60px; height: 60px;">
+            <i class="bi bi-clock text-warning" style="font-size: 1.5rem;"></i>
+          </div>
+          <h3 class="h2 mb-1 text-warning">{{ pendingInspections }}</h3>
+          <p class="text-muted mb-0">Pending Inspections</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+               style="width: 60px; height: 60px;">
+            <i class="bi bi-people text-info" style="font-size: 1.5rem;"></i>
+          </div>
+          <h3 class="h2 mb-1 text-info">{{ totalUsers }}</h3>
+          <p class="text-muted mb-0">Active Users</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="card-body" [ngSwitch]="activeTab">
-    <div *ngSwitchCase="'buildings'">
-      <h5 class="card-title">Building Management</h5>
-      <p class="card-text">View, add, edit, and delete buildings and their inspection checklists.</p>
-      <a routerLink="/buildings" class="btn btn-primary">Go to Building Management</a>
-    </div>
 
-    <div *ngSwitchCase="'addUser'">
-      <app-add-user-form></app-add-user-form>
-    </div>
-
-    <div *ngSwitchCase="'profile'">
-      <h5 class="card-title">Profile Management</h5>
-      <p>This feature is coming soon.</p>
-    </div>
-  </div>
 </div>
