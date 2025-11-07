@@ -28,12 +28,12 @@
         <li *ngFor="let item of checklistItems; let i = index; trackBy: trackByItemId" class="list-group-item">
           <div class="row align-items-center">
             <div class="col-md-7">
-              <label class="form-label visually-hidden">Question</label>
+              <label class="form-label visually-hidden">Inspection Item</label>
               <input type="text" class="form-control" [ngModel]="item.question"
                 (ngModelChange)="handleItemChange(i, 'question', $event)" [name]="'question-' + i">
             </div>
             <div class="col-md-3">
-              <label class="form-label visually-hidden">Type</label>
+              <label class="form-label visually-hidden">Input Type</label>
               <select class="form-select" [ngModel]="item.type" (ngModelChange)="handleItemChange(i, 'type', $event)"
                 [name]="'type-' + i">
                 <option value="BOOLEAN">Yes/No</option>
@@ -54,11 +54,11 @@
       <h5>Add New Item</h5>
       <div class="row g-3 align-items-end">
         <div class="col-md-6">
-          <label for="newQuestion" class="form-label">Question</label>
+          <label for="newQuestion" class="form-label">Inspection Item</label>
           <input type="text" class="form-control" id="newQuestion" [(ngModel)]="newQuestion" name="newQuestion">
         </div>
         <div class="col-md-4">
-          <label for="newQuestionType" class="form-label">Type</label>
+          <label for="newQuestionType" class="form-label">Input Type</label>
           <select id="newQuestionType" class="form-select" [(ngModel)]="newQuestionType" name="newQuestionType">
             <option value="BOOLEAN">Yes/No</option>
             <option value="NUMERIC">Number</option>
