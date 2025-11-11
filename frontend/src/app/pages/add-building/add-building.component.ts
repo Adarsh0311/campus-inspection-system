@@ -22,7 +22,10 @@ export class AddBuildingComponent {
 
   // State for the "add new item" sub-form
   newQuestion = '';
-  newQuestionType: 'NUMERIC' | 'BOOLEAN' | 'TEXT' = 'BOOLEAN';
+  newQuestionType: 'NUMERIC' | 'BOOLEAN' | 'TEXT' = 'NUMERIC';
+  buildingStatus: boolean = true;
+
+  errorMessage = '';
 
   constructor(private buildingService: BuildingService, public router: Router) {}
 
@@ -56,6 +59,7 @@ export class AddBuildingComponent {
     const payload: CreateBuildingPayload = {
       name: this.buildingName,
       location: this.buildingLocation,
+      isActive: this.buildingStatus,
       checklistItems: this.checklistItems,
     };
 
@@ -65,7 +69,8 @@ export class AddBuildingComponent {
       },
       error: (err) => {
         console.error('Failed to create building', err);
-        alert('Failed to create building.');
+        this.errorMessage = 'Failed to create building. Try using a different name.';
+        //alert(this.errorMessage);
       }
     });
   }

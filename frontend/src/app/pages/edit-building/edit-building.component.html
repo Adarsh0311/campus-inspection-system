@@ -13,12 +13,19 @@
           <input type="text" class="form-control" id="buildingName" [(ngModel)]="buildingName" name="buildingName"
             required>
         </div>
-        <div class="mb-3 col-md-6 col-lg-6">
+        <!-- <div class="mb-3 col-md-6 col-lg-6">
           <label for="buildingLocation" class="form-label">Location</label>
           <input type="text" class="form-control" id="buildingLocation" [(ngModel)]="buildingLocation"
             name="buildingLocation">
-        </div>
+        </div> -->
+        <div class="mb-3 col-md-6 col-lg-6">
+          <label for="buildingStatus" class="form-label">Status</label>
+          <select class="form-select" id="buildingStatus" [(ngModel)]="buildingStatus" name="buildingStatus" required>
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
       </div>
+    </div>
     </div>
 
 

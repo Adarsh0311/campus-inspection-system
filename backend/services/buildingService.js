@@ -2,7 +2,7 @@ const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function createBuildingWithChecklist(buildingData) {
-    const {name, location, checklistItems} = buildingData;
+    const {name, location, isActive, checklistItems} = buildingData;
 
     //transaction
     return prisma.$transaction(async (tx) => {
@@ -11,6 +11,7 @@ async function createBuildingWithChecklist(buildingData) {
             data: {
                 name,
                 location,
+                isActive
             },
         });
 
@@ -59,14 +60,15 @@ async function getBuildingById(id) {
 
 async function deleteBuilding(id) {
     //transaction
-    return prisma.building.delete({
+    return prisma.building.update({
         where: {id: id},
+        data: {isActive: false},
     });
 }
 
 
 async function updateBuilding(id, updatedBuildingData) {
-    const {name, location, checklistItems} = updatedBuildingData;
+    const {name, location, isActive, checklistItems} = updatedBuildingData;
 
     return prisma.$transaction(async (tx) => {
         //1. update parent building record
@@ -77,6 +79,7 @@ async function updateBuilding(id, updatedBuildingData) {
                 data: {
                     name,
                     location,
+                    isActive,
                 },
             });
         }

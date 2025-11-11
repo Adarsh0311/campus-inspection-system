@@ -15,6 +15,12 @@ async function submitInspection(inspectionData) {
 
 }
 
+function toUTCDateOnly(dateStr) {
+    const d = new Date(dateStr);
+    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+}
+
+
 /**
  * Get inspection history for a building within a date range.
  * @param buildingId
@@ -23,16 +29,23 @@ async function submitInspection(inspectionData) {
  * @returns {Promise<GetFindResult<Prisma.$InspectionPayload<DefaultArgs>, {where: {buildingId: *, date: {gte: *, lte: *}}, include: {inspectionAnswers: boolean}}, Prisma.PrismaClientOptions>[]>}
  */
 async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate, endDate) {
-    const sDate = startDate ? new Date(startDate) : undefined;
-    const eDate = endDate ? new Date(endDate) : undefined;
+    const sDate = startDate ? toUTCDateOnly(startDate) : undefined;
+    const eDate = endDate ? toUTCDateOnly(endDate) : undefined;
+
+    const dateFilter = {};
+    if (sDate && eDate) {
+        dateFilter.lte = sDate;
+        dateFilter.gte = eDate;
+    } else if (sDate) {
+        dateFilter.lte = sDate;
+    } else if (eDate) {
+        dateFilter.gte = eDate;
+    }
 
     const inspections = await prisma.inspection.findMany({
         where: {
-            buildingId: buildingId,
-            date: {
-                lte: sDate,
-                gte: eDate
-            }
+            buildingId,
+            ...(Object.keys(dateFilter).length ? { date: dateFilter } : {}),
         },
         select: {
             id: true,
@@ -72,9 +85,11 @@ async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate,
         //format user name
         const name = `${inspection.user.firstName} ${inspection.user.lastName}`;
 
+
         return {
             ...inspection,
             user: name,
+            date: inspection.date.toISOString().slice(0, 10), // show YYYY-MM-DD only
             answers: formatedAnswers
         }
     });

@@ -9,6 +9,7 @@ export interface Building {
   id: string;
   name: string;
   location?: string;
+  isActive: boolean;
   checklistItems: ChecklistItem[]; // A building can have checklist items
   createdAt: string;
   updatedAt: string;
@@ -18,6 +19,7 @@ export interface Building {
 export interface CreateBuildingPayload {
   name: string;
   location?: string;
+  isActive: boolean;
   checklistItems: Omit<ChecklistItem, 'id' | 'required' | 'order'>[]; // Omit 'id' for creation
 }
 
@@ -41,6 +43,7 @@ export interface BuildingResponse {
 export interface UpdateBuildingPayload {
   name?: string;
   location?: string;
+  isActive?: boolean;
   checklistItems: {
     create: Omit<ChecklistItem, 'id'>[]; // New items
     update: ChecklistItem[];             // Existing items to update
