@@ -78,6 +78,14 @@ export class AuthService {
     return !this.isTokenExpired(token);
   }
 
+  updateProfile(data: { firstName: string; lastName: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/profile`, data);
+  }
+
+  changePassword(data: { currentPassword: string; newPassword: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/change-password`, data);
+  }
+
   private isTokenExpired(token?: string): boolean {
     const t = token ?? this.getToken();
     if (!t) return true;
@@ -98,4 +106,6 @@ export class AuthService {
       return true;
     }
   }
+
+
 }

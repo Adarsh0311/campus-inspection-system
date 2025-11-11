@@ -6,6 +6,7 @@ const PORT = 3000;
 const userRoute = require('./routes/userRoute');
 const buildingRoute = require('./routes/buildingRoute');
 const authRoute = require('./routes/authRoute');
+const inspectionRoute = require('./routes/inspectionRoute');
 
 const { authMiddleware, adminMiddleware } = require('./middleware/authMiddleware');
 
@@ -35,7 +36,8 @@ app.use('/api/auth', authRoute);
 app.use(authMiddleware);
 
 app.use('/api/users', userRoute);
-app.use('/api/buildings', adminMiddleware, buildingRoute);
+app.use('/api/buildings', buildingRoute);
+app.use('/api/inspections', inspectionRoute);
 
 
 

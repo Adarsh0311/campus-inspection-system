@@ -74,7 +74,22 @@ async function handleUpdateBuilding(req, res) {
     }
 }
 
+async function handleGetBuildingChecklistItems(req, res) {
+    const {id} = req.params;
+    try {
+        const checklistItems = await buildingService.getBuildingChecklistItems(id);
+        if (!checklistItems) {
+            return res.status(404).json({error: 'Building not found. Invalid id'});
+        }
+        res.status(200).json(checklistItems);
+    }
+    catch (error) {
+        console.error('Error fetching building checklist items:', error);
+        res.status(500).json({error: 'An error occurred while fetching the building checklist items.'});
+    }
+}
+
 
 module.exports = {
-    handleCreateBuilding, handleGetAllBuildings, handleGetBuildingById, handleUpdateBuilding, handleDeleteBuilding
+    handleCreateBuilding, handleGetAllBuildings, handleGetBuildingById, handleUpdateBuilding, handleDeleteBuilding, handleGetBuildingChecklistItems
 };

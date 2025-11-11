@@ -1,7 +1,7 @@
 <h2>Add New Building</h2>
 <form (ngSubmit)="handleSaveBuilding()" #buildingForm="ngForm" class="card p-4">
   <div class="card bg-light p-3 mb-3">
-    <h4>Building Details</h4>
+    <h5>Building Details</h5>
     <div class="row">
       <div class="mb-3 col-md-6 col-lg-6">
         <label for="buildingName" class="form-label">Building Name</label>
@@ -18,30 +18,30 @@
 
 
   <div class="card bg-light p-3 mb-3">
-    <h4>Inspection Checklist</h4>
+    <h6>Data Categories</h6>
     <ul class="list-group mb-3">
       <li *ngFor="let item of checklistItems; let i = index"
         class="list-group-item d-flex justify-content-between align-items-center">
         <span>{{ item.question }} <span class="badge bg-secondary">{{ item.type }}</span></span>
         <button type="button" class="btn btn-sm btn-outline-danger" (click)="handleRemoveItem(i)">Remove</button>
       </li>
-      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No checklist items yet.</li>
+      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No data categories yet.</li>
     </ul>
   </div>
 
   <div class="card bg-light p-3 mb-3">
-    <h5>Add New Item</h5>
+    <h6>Add New Category</h6>
     <div class="row g-3 align-items-end">
       <div class="col-md-6">
-        <label for="newQuestion" class="form-label">Question</label>
+        <label for="newQuestion" class="form-label">Name</label>
         <input type="text" class="form-control" id="newQuestion" [(ngModel)]="newQuestion" name="newQuestion">
       </div>
       <div class="col-md-4">
         <label for="newQuestionType" class="form-label">Type</label>
         <select id="newQuestionType" class="form-select" [(ngModel)]="newQuestionType" name="newQuestionType">
+          <option value="TEXT">Text</option>
           <option value="BOOLEAN">Yes/No</option>
           <option value="NUMERIC">Number</option>
-          <option value="TEXT">Text</option>
         </select>
       </div>
       <div class="col-md-2 d-grid">

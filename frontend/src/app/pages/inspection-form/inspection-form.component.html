@@ -1,0 +1,107 @@
+<div class="inspection-form-container">
+  <!-- Header -->
+  <div class="inspection-header">
+    <div class="container">
+      <div class="header-content">
+        <button (click)="navigateBack()" class="btn btn-outline-light me-3" type="button">
+          <i class="bi bi-arrow-left me-2"></i>
+          Back
+        </button>
+
+        <div class="inspection-info">
+          <h5>{{ buildingName }}</h5>
+          <p class="inspection-subtitle">
+            <i class="bi bi-calendar me-2"></i>
+            {{ inspectionDate | date:'fullDate' }}
+            <span class="ms-4">
+              <i class="bi bi-person me-2"></i>
+              {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="container">
+    <div class="loading-section">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="mt-3">Loading inspection form...</div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="container">
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="container">
+    <div class="alert alert-success" role="alert">
+      <i class="bi bi-check-circle me-2"></i>
+      {{ successMessage }}
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div *ngIf="!isLoading && building" class="container">
+    <div class="row">
+
+      <!-- Main Question Area -->
+
+      <div *ngFor="let currentQuestion of building.checklistItems " class="col-lg-4 col-md-6 col-sm-6 mb-3">
+        <div class="form-group">
+          <label>
+            {{ currentQuestion.question }}
+          </label>
+
+          <div *ngIf="currentQuestion.type.toLowerCase() === 'boolean'">
+            <select name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+              [(ngModel)]="responses[currentQuestion.id]" class="form-select">
+              <option ngValue="Yes">Yes</option>
+              <option ngValue="No">No</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="currentQuestion.type.toLowerCase() === 'numeric'">
+          <input type="number" name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+            id="{{currentQuestion.id}}_{{currentQuestion.question}}" [ngModel]="responses[currentQuestion.id]"
+            (ngModelChange)="responses[currentQuestion.id] = $event == null ? '' : String($event)"
+            class="form-control" />
+        </div>
+        <div *ngIf="currentQuestion.type.toLowerCase() === 'text'">
+          <textarea *ngIf="isTextAreaQuestion(currentQuestion); else singleLine" class="form-control"
+            [(ngModel)]="responses[currentQuestion.id]" name="{{currentQuestion.id}}_{{currentQuestion.question}}"></textarea>
+
+          <!-- Else show input -->
+          <ng-template #singleLine>
+            <input type="text" name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+            id="{{currentQuestion.id}}_{{currentQuestion.question}}" [(ngModel)]="responses[currentQuestion.id]"
+            class="form-control" />
+          </ng-template>
+
+          
+
+        </div>
+      </div>
+      <div class="row mt-4 mb-5">
+        <button (click)="submitInspection()" [disabled]="!isFormValid() || isSaving || isSubmitting"
+          class="btn btn-success" type="button">
+          <span *ngIf="!isSubmitting">
+            <i class="bi bi-check-circle me-2"></i>
+            Submit Inspection
+          </span>
+          <span *ngIf="isSubmitting">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            Submitting...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>

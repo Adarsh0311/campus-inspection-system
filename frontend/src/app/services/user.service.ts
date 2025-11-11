@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from '../environment.development';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,12 @@ export class UserService {
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${userId}`, { headers: this.getAuthHeaders() });
   }
-   updateUser(id: string, userData: any): Observable<any> {
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${userId}`, { headers: this.getAuthHeaders() });
+  }
+
+  updateUser(id: string, userData: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, userData, { headers: this.getAuthHeaders() });
   }
   resetPassword(id: string): Observable<any> {

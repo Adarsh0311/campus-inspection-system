@@ -9,8 +9,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 // Model for users (Admins and Technicians)
 model User {
   id          String       @id @default(cuid())
@@ -22,8 +20,8 @@ model User {
   isActive    Boolean      @default(true)
   inspections Inspection[]
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("user")
 }
@@ -35,86 +33,86 @@ model Building {
   location       String?
   checklistItems ChecklistItem[]
   inspections    Inspection[]
+  isActive       Boolean         @default(true)
 
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("buildings")
 }
 
 // Model for a single item within a building's checklist
 model ChecklistItem {
-  id        String             @id @default(cuid())
-  question  String
-  type      ChecklistItemType
-  
+  id       String            @id @default(cuid())
+  question String
+  type     ChecklistItemType
+
   buildingId String
   building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
-  
-  answers    InspectionAnswer[]
 
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
+  answers InspectionAnswer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("checklist_items")
 }
 
 // Model for a single inspection event, linking a user, a building, and a date
 model Inspection {
-  id          String             @id @default(cuid())
-  date        DateTime           @default(now())
-  
-  userId      String
-  user        User               @relation(fields: [userId], references: [id])
-  
-  buildingId  String
-  building    Building           @relation(fields: [buildingId], references: [id])
-  
-  answers     InspectionAnswer[]
+  id   String   @id @default(cuid())
+  date DateTime @default(now())
 
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  buildingId String
+  building   Building @relation(fields: [buildingId], references: [id])
+
+  answers InspectionAnswer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("inspection")
 }
 
 // Model for a specific answer to a checklist item within an inspection
 model InspectionAnswer {
-  id              String         @id @default(cuid())
-  
-  numericAnswer   Float?
-  booleanAnswer   Boolean?
-  textAnswer      String?
+  id String @id @default(cuid())
 
-  inspectionId    String
-  inspection      Inspection     @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  numericAnswer Float?
+  booleanAnswer Boolean?
+  textAnswer    String?
+
+  inspectionId String
+  inspection   Inspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
 
   checklistItemId String
-  checklistItem   ChecklistItem  @relation(fields: [checklistItemId], references: [id])
+  checklistItem   ChecklistItem @relation(fields: [checklistItemId], references: [id])
 
-  issue           Issue?
+  issue Issue?
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("inspection_answers")
 }
 
 // Model for a flagged issue reported by a technician
 model Issue {
-  id                 String           @id @default(cuid())
-  comment            String
-  resolved           Boolean          @default(false)
-  
+  id       String  @id @default(cuid())
+  comment  String
+  resolved Boolean @default(false)
+
   inspectionAnswerId String           @unique
   inspectionAnswer   InspectionAnswer @relation(fields: [inspectionAnswerId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("issues")
 }
-
 
 // --- Enums for predefined types ---
 

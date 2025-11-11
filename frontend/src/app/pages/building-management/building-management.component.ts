@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Building} from "../../models/building";
-import {BuildingService} from "../../services/building.service";
-import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
+import { Building } from "../../models/building";
+import { BuildingService } from "../../services/building.service";
+import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
 import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 import { LoadingSpinnerComponent } from '../../components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
@@ -11,16 +11,19 @@ import { EmptyStateComponent } from '../../components/empty-state/empty-state.co
 @Component({
   selector: 'app-building-management',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule,   PageHeaderComponent, 
-    LoadingSpinnerComponent, 
+  imports: [FormsModule, CommonModule, RouterModule, PageHeaderComponent,
+    LoadingSpinnerComponent,
     EmptyStateComponent],
   templateUrl: './building-management.component.html',
   styleUrls: ['./building-management.component.css']
 })
 export class BuildingManagementComponent implements OnInit {
+
   buildings: Building[] = [];
   isLoading = true;
   errorMessage = '';
+  filterBuildingName = '';
+  filteredBuildings: Building[] = [];
 
   // For the "Add New" form
   newBuildingName = '';
@@ -40,6 +43,7 @@ export class BuildingManagementComponent implements OnInit {
     this.buildingService.getBuildings().subscribe({
       next: (data) => {
         this.buildings = data;
+        this.filteredBuildings = data;
         this.isLoading = false;
       },
       error: (err) => {
@@ -64,6 +68,18 @@ export class BuildingManagementComponent implements OnInit {
         }
       });
     }
+  }
+
+  filterBuildings() {
+    // This method can be expanded to implement filtering logic
+    this.filteredBuildings = this.buildings.filter(b =>
+      b.name.toLowerCase().includes(this.filterBuildingName.toLowerCase())
+    );
+  }
+
+  clearFilters() {
+    this.filterBuildingName = '';
+    this.filteredBuildings = this.buildings;
   }
 
 }

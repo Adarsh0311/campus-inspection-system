@@ -16,6 +16,31 @@
     </a>
   </div>
 
+    <!-- Filter Bar -->
+  <div class="card mb-4">
+    <div class="card-body py-3">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label for="searchFilter" class="form-label form-label-sm">Search Buildings</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input type="text" class="form-control" id="searchFilter" [(ngModel)]="filterBuildingName"
+              (ngModelChange)="filterBuildings()" placeholder="Search by name">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+            <i class="bi bi-x-circle me-1"></i>
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
     <i class="bi bi-exclamation-triangle me-2"></i>
@@ -30,20 +55,20 @@
   </app-loading-spinner>
 
   <!-- Buildings Table -->
-  <div *ngIf="!isLoading && buildings.length > 0" class="card">
+  <div *ngIf="!isLoading && filteredBuildings.length > 0" class="card">
     <div class="table-responsive">
-      <table class="table table-enhanced mb-0">
-        <thead>
+      <table class="table table-hover table-bordered mb-0">
+        <thead class="table-secondary">
           <tr>
             <th>Building Name</th>
             <th>Location</th>
             <th>Checklist Items</th>
             <th>Last Updated</th>
-            <th class="text-end">Actions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let building of buildings">
+          <tr *ngFor="let building of filteredBuildings">
             <td>
               <div class="d-flex align-items-center">
                 <div class="bg-opacity-10 rounded-circle p-2 me-3">
@@ -64,25 +89,27 @@
             </td>
             <td>
               <span class="badge bg-light text-dark">
-                {{ building.checklistItems?.length || 0 }} items
+                {{ building?.checklistItems?.length || 0 }} items
               </span>
             </td>
             <td>
               <small class="text-muted">{{ building.updatedAt | date:'short' }}</small>
             </td>
-            <td class="text-end">
-              <div class="btn-group btn-group-sm">
+            <td>
+              <div class="d-flex justify-content-left gap-1">
                 <button
-                  class="btn btn-outline-secondary"
+                  class="btn-sm btn btn-success"
                   [routerLink]="['/buildings/edit', building.id]"
                   title="Edit building">
-                  <i class="bi bi-pencil"></i>
+                  <!-- <i>Edit</i> -->
+                  Edit
                 </button>
                 <button
-                  class="btn btn-outline-danger"
+                  class="btn-sm btn btn-danger"
                   (click)="onDeleteBuilding(building.id, building.name)"
                   title="Delete building">
-                  <i class="bi bi-trash"></i>
+                  <!-- <i class="bi bi-trash"></i> -->
+                  Delete
                 </button>
               </div>
             </td>
@@ -94,13 +121,9 @@
 
   <!-- Empty State -->
   <app-empty-state
-    *ngIf="!isLoading && buildings.length === 0"
+    *ngIf="!isLoading && filteredBuildings.length === 0"
     title="No buildings found"
-    message="Get started by adding your first building to the system."
+    message=""
     icon="bi-building">
-    <a routerLink="/buildings/new" class="btn btn-primary">
-      <i class="bi bi-plus-circle me-2"></i>
-      Add First Building
-    </a>
   </app-empty-state>
 </div>

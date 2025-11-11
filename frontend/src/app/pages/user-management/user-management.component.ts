@@ -159,26 +159,27 @@ export class UserManagementComponent implements OnInit {
 
   exportUsers() {
     // Simple CSV export
-    // const headers = ['Name', 'Email', 'Role', 'Status', 'Created', 'Last Login'];
-    // const csvContent = [
-    //   headers.join(','),
-    //   ...this.filteredUsers.map(user => [
-    //     `"${user.name}"`,
-    //     `"${user.email}"`,
-    //     user.role,
-    //     user.status,
-    //     new Date(user.createdAt).toLocaleDateString(),
-    //     user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'
-    //   ].join(','))
-    // ].join('\n');
+    const headers = ['First Name', 'Last Name', 'Email', 'Role', 'Status', 'Created', 'Last Login'];
+    const csvContent = [
+      headers.join(','),
+      ...this.filteredUsers.map(user => [
+        `"${user.firstName}"`,
+        `"${user.lastName}"`,
+        `"${user.email}"`,
+        user.role,
+        user.isActive ? 'ACTIVE' : 'INACTIVE',
+        new Date(user.createdAt).toLocaleDateString(),
+        user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'
+      ].join(','))
+    ].join('\n');
 
-    // const blob = new Blob([csvContent], { type: 'text/csv' });
-    // const url = window.URL.createObjectURL(blob);
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.download = `users-${new Date().toISOString().split('T')[0]}.csv`;
-    // link.click();
-    // window.URL.revokeObjectURL(url);
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `users-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
 
   // Utility methods
@@ -195,11 +196,9 @@ export class UserManagementComponent implements OnInit {
   getRoleBadgeClass(role: string): string {
     switch (role) {
       case 'ADMIN':
-        return 'bg-danger';
-      case 'INSPECTOR':
-        return 'bg-primary';
-      case 'VIEWER':
-        return 'bg-secondary';
+        return 'text-bg-primary';
+      case 'TECHNICIAN':
+        return 'text-bg-secondary';
       default:
         return 'bg-light text-dark';
     }
@@ -209,10 +208,8 @@ export class UserManagementComponent implements OnInit {
     switch (role) {
       case 'ADMIN':
         return 'bi bi-shield-check';
-      case 'INSPECTOR':
+      case 'TECHNICIAN':
         return 'bi bi-clipboard-check';
-      case 'VIEWER':
-        return 'bi bi-eye';
       default:
         return 'bi bi-person';
     }

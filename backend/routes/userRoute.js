@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {adminMiddleware, authMiddleware} = require('../middleware/authMiddleware');
-const { getUsers, getUserById, updateUser, deleteUser, registerUser, getUsersCount } = require('../controllers/userController');
+const { getUsers, getUserById, updateUser, deactivateUser, registerUser, getUsersCount } = require('../controllers/userController');
 
 
 router.route('/')
@@ -10,7 +10,7 @@ router.route('/')
 router.route('/:id')
     .get(getUserById)
     .put(updateUser)
-    .delete(adminMiddleware, deleteUser);
+    .delete(adminMiddleware, deactivateUser);
 
 router.route('/count')
     .get( getUsersCount);
