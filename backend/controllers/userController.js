@@ -38,9 +38,10 @@ async function registerUser(req, res) {
 
 async function getUsers(req, res){
     try {
-        const users = await prisma.user.findMany(
-            {select: userResponse}
-        );
+        const users = await prisma.user.findMany({
+            select: userResponse,
+            orderBy: { createdAt: 'desc' }
+        });
         return res.status(200).json(users);
     } catch (error) {
         return res.status(400).send({error: error.message});
@@ -66,17 +67,19 @@ async function getUserById(req, res){
 async function updateUser(req, res){
     try {
         const { id } = req.params;
+        const updateData = { ...req.body };
         const updatedUser = await prisma.user.update({
             where: { id: id },
-            data: req.body
+            data: updateData,
+            select: userResponse
         });
         return res.status(200).json(updatedUser);
     } catch (error) {
-        return res.status(400).send({error: error.message});
+        return res.status(500).send({error: 'Internal server error'});
     }
 }
 
-async function deleteUser(req, res){
+async function deactivateUser(req, res){
     try {
         const { id } = req.params;
         const deletedUser = await prisma.user.update({
@@ -116,4 +119,4 @@ const userResponse =  {
 };
 
 
-module.exports = {deleteUser, getUserById, getUsers, updateUser, registerUser, getUsersCount};
+module.exports = {deactivateUser, getUserById, getUsers, updateUser, registerUser, getUsersCount};

@@ -21,7 +21,7 @@ export const adminRoleGuard: CanActivateFn = (route, state) => {
       return true; // Access granted
     } else {
 
-      router.navigate(['/dashboard']); // Redirect non-admins
+      router.navigate(['/inspector-dashboard']); // Redirect non-admins
       return false;
     }
   } catch (e) {

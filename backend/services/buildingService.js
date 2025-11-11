@@ -29,6 +29,19 @@ async function createBuildingWithChecklist(buildingData) {
     })
 }
 
+async function getBuildingChecklistItems(buildingId) {
+    const checklistItems = await prisma.checklistItem.findMany({
+        where: {
+            buildingId: buildingId
+        },
+        select: {
+            id: true,
+            question: true
+        }
+    });
+
+    return checklistItems;
+}
 
 async function getAllBuildings() {
     return prisma.building.findMany({});
@@ -113,5 +126,5 @@ async function updateBuilding(id, updatedBuildingData) {
 }
 
 module.exports = {
-    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding
+    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding, getBuildingChecklistItems
 }

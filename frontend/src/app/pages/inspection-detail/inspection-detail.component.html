@@ -1,0 +1,33 @@
+<div class="container mt-4">
+    <div *ngIf="inspection" class="inspection-detail">
+        <div class="card mb-3 w-100">
+            
+            <div class="row p-2">
+                
+                <p *ngIf="inspection.building">
+                    <app-back-button></app-back-button>
+                    <span><strong>Building:</strong> {{ inspection.building.name }}</span>
+                    <span><strong>Submitted By:</strong> {{ inspection.user }}</span>
+                    <span><strong>Date:</strong> {{ inspection.date | date: 'MM/dd/yyyy' }}</span>
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card mb-3 w-100 p-2">
+            <div class="row">
+                <div class="col-md-4" *ngFor="let item of buildingChecklistItems">
+                    <div class="mb-1">
+                        <div class="card-body">
+                            <label>{{ item.question }}</label>
+                            <textarea disabled class="form-control" [value]="getAnswerForQuestion(inspection, item)"
+                                readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>

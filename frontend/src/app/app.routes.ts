@@ -8,6 +8,12 @@ import {EditBuildingComponent} from "./pages/edit-building/edit-building.compone
 import { adminRoleGuard } from './guards/admin-role.guard';
 import {AddUserFormComponent} from "./add-user-form/add-user-form.component";
 import {UserManagementComponent} from "./pages/user-management/user-management.component";
+import { InspectorDashboardComponent } from "./pages/inspector-dashboard/inspector-dashboard.component";
+import { InspectionFormComponent } from "./pages/inspection-form/inspection-form.component";
+import { InspectionHistoryComponent } from './pages/inspection-history/inspection-history.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { EditUserComponent } from './pages/edit-user/edit-user.component';
+import { InspectionDetailComponent } from './pages/inspection-detail/inspection-detail.component';
 
 
 export const routes: Routes = [
@@ -21,12 +27,31 @@ export const routes: Routes = [
     ]
   },
 
-  { path: 'users',
+  { path: 'users', canActivate: [authGuard, adminRoleGuard],
     children: [
-      { path: '', component: UserManagementComponent, canActivate: [authGuard, adminRoleGuard], title: 'User Management'} ,
-      { path: 'new', component: AddUserFormComponent, canActivate: [authGuard, adminRoleGuard], title: 'Add User'},
+      { path: '', component: UserManagementComponent, title: 'User Management'} ,
+      { path: 'new', component: AddUserFormComponent, title: 'Add User'},
+      { path: 'edit/:id', component: EditUserComponent, title: 'Edit User'},
     ]
   },
 
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
+  // Technician Routes (accessible by both Technician and ADMIN roles)
+  { path: 'inspector-dashboard', component: InspectorDashboardComponent, canActivate: [authGuard], title: 'Technician Dashboard' },
+
+  { path: 'inspection', canActivate: [authGuard],
+    children: [
+      { path: 'form', component: InspectionFormComponent, title: 'Inspection Form' },
+      { path: 'history', component: InspectionHistoryComponent, title: 'Inspection History' },
+      { path: 'detail/:id', component: InspectionDetailComponent, title: 'Inspection Detail' },
+      // Add history component later when needed
+    ]
+  },
+
+  {
+  path: 'profile',
+  component: ProfileComponent,
+  canActivate: [authGuard]
+},
+
+  { path: '**', redirectTo: '/dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
 ];

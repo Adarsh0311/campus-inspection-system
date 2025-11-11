@@ -36,9 +36,9 @@
               <label class="form-label visually-hidden">Type</label>
               <select class="form-select" [ngModel]="item.type" (ngModelChange)="handleItemChange(i, 'type', $event)"
                 [name]="'type-' + i">
+                <option value="TEXT">Text</option>
                 <option value="BOOLEAN">Yes/No</option>
                 <option value="NUMERIC">Number</option>
-                <option value="TEXT">Text</option>
               </select>
             </div>
             <div class="col-md-2 d-grid">

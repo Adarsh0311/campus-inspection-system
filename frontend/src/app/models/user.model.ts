@@ -7,9 +7,15 @@ export interface User {
     isActive: boolean;
     createdAt: string;
     lastLogin?: string;
+    updatedAt: string;
 }
 
 export interface CreateUserPayload extends Omit<User, 'id' | 'createdAt' | 'lastLogin'> {
     password: string;
 }
+
+export interface UpdateUserPayload extends Omit<User, 'createdAt' | 'lastLogin'> {
+    password: string;
+}
+
 

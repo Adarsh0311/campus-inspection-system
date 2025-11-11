@@ -3,13 +3,14 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BackButtonComponent } from '../pages/back-button/back-button.component';
 
 @Component({
   selector: 'app-add-user-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, BackButtonComponent],
   templateUrl: './add-user-form.component.html',
-  styleUrl: './add-user-form.component.css'
+  styleUrls: ['./add-user-form.component.css']
 })
 export class AddUserFormComponent {
   firstName = '';

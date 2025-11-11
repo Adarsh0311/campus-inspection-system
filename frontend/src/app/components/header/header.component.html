@@ -11,9 +11,11 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="ms-5 nav-item">
-          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      
+      <ul class="ms-5 nav nav-tabs mb-2 mb-lg-0" >
+        <ng-container *ngIf="user.role === 'ADMIN'">
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/buildings" routerLinkActive="active">Building Management</a>
@@ -21,7 +23,12 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">User Management</a>
         </li>
-        </ul>
+        </ng-container>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inspector-dashboard" routerLinkActive="active">{{user.role == 'ADMIN' ? 'Inspection' : 'Home'}}</a>
+        </li>
+      </ul>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
@@ -29,7 +36,7 @@
             {{ user.email }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <button class="dropdown-item" (click)="logout()">Logout</button>

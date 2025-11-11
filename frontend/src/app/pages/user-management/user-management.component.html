@@ -21,44 +21,28 @@
             <span class="input-group-text">
               <i class="bi bi-search"></i>
             </span>
-            <input 
-              type="text" 
-              class="form-control" 
-              id="searchFilter"
-              [(ngModel)]="searchTerm" 
-              (ngModelChange)="filterUsers()"
-              placeholder="Search by name or email...">
+            <input type="text" class="form-control" id="searchFilter" [(ngModel)]="searchTerm"
+              (ngModelChange)="filterUsers()" placeholder="Search by name or email...">
           </div>
         </div>
         <div class="col-md-3">
           <label for="roleFilter" class="form-label form-label-sm">Filter by Role</label>
-          <select 
-            class="form-select" 
-            id="roleFilter"
-            [(ngModel)]="selectedRole" 
-            (ngModelChange)="filterUsers()">
+          <select class="form-select" id="roleFilter" [(ngModel)]="selectedRole" (ngModelChange)="filterUsers()">
             <option value="">All Roles</option>
             <option value="ADMIN">Admin</option>
-            <option value="INSPECTOR">Inspector</option>
-            <option value="VIEWER">Viewer</option>
+            <option value="TECHNICIAN">Technician</option>
           </select>
         </div>
         <div class="col-md-3">
           <label for="statusFilter" class="form-label form-label-sm">Filter by Status</label>
-          <select 
-            class="form-select" 
-            id="statusFilter"
-            [(ngModel)]="selectedStatus" 
-            (ngModelChange)="filterUsers()">
+          <select class="form-select" id="statusFilter" [(ngModel)]="selectedStatus" (ngModelChange)="filterUsers()">
             <option value="">All Status</option>
             <option value="ACTIVE">Active</option>
             <option value="INACTIVE">Inactive</option>
           </select>
         </div>
         <div class="col-md-2">
-          <button 
-            class="btn btn-outline-secondary w-100"
-            (click)="clearFilters()">
+          <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
             <i class="bi bi-x-circle me-1"></i>
             Clear
           </button>
@@ -82,25 +66,23 @@
   </div>
 
   <!-- Loading State -->
-  <app-loading-spinner
-    *ngIf="isLoading"
-    message="Loading users..."
-    [height]="300">
+  <app-loading-spinner *ngIf="isLoading" message="Loading users..." [height]="300">
   </app-loading-spinner>
 
   <!-- Users Table -->
   <div *ngIf="!isLoading && filteredUsers.length > 0" class="card">
     <div class="table-responsive">
-      <table class="table table-hover table-enhanced mb-0">
-        <thead class="thead-dark">
+      <table class="table table-hover table-bordered mb-0">
+        <thead class="table-secondary">
           <tr>
-            <th>Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
             <!-- <th>Last Login</th> -->
             <th>Created</th>
-            <th class="text-end">Actions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -108,25 +90,31 @@
             <td>
               <div class="d-flex align-items-center">
                 <div>
-                  <div>{{ user.firstName + ' ' + user.lastName }}</div>
+                  <div>{{ user.firstName }}</div>
                 </div>
               </div>
             </td>
             <td>
               <div class="d-flex align-items-center">
-                <!-- <i class="bi bi-envelope me-2 text-muted"></i> -->
-                {{ user.email }}
+                <div>
+                  <div>{{ user.lastName }}</div>
+                </div>
               </div>
             </td>
             <td>
+              <div class="d-flex align-items-center">
+                <div>{{ user.email }}</div>
+              </div>
+            </td>
+
+            <td>
               <span class="badge" [ngClass]="getRoleBadgeClass(user.role)">
-                <i [class]="getRoleIcon(user.role)" class="me-1"></i>
+                <!-- <i [class]="getRoleIcon(user.role)" class="me-1"></i> -->
                 {{ user.role }}
               </span>
             </td>
             <td>
               <span class="badge" [ngClass]="getStatusBadgeClass(user.isActive ? 'ACTIVE' : 'INACTIVE')">
-                <i [class]="getStatusIcon(user.isActive ? 'ACTIVE' : 'INACTIVE')" class="me-1"></i>
                 {{ user.isActive ? 'ACTIVE' : 'INACTIVE' }}
               </span>
             </td>
@@ -143,40 +131,17 @@
             <td>
               <small class="text-muted">{{ user.createdAt | date:'short' }}</small>
             </td>
-            <td class="text-end">
-              <div class="btn-group btn-group-sm">
-                <button
-                  class="btn btn-outline-primary"
-                  [routerLink]="['/users/edit', user.id]"
-                  title="Edit user">
-                  <i class="bi bi-pencil"></i>
+            <td>
+              <div class="d-flex justify-content-left gap-1">
+                <button class="btn-sm btn btn-success" [routerLink]="['/users/edit', user.id]" title="Edit user">
+                  <!-- <i class="bi bi-pencil me-1"></i> -->
+                  Edit
                 </button>
-                <button
-                  class="btn btn-outline-info"
-                  (click)="viewUserDetails(user)"
-                  title="View details">
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button
-                  *ngIf="user.isActive === true"
-                  class="btn btn-outline-warning"
-                  (click)="toggleUserStatus(user.id, 'INACTIVE')"
-                  title="Deactivate user">
-                  <i class="bi bi-pause-circle"></i>
-                </button>
-                <button
-                  *ngIf="user.isActive === false"
-                  class="btn btn-outline-success"
-                  (click)="toggleUserStatus(user.id, 'ACTIVE')"
-                  title="Activate user">
-                  <i class="bi bi-play-circle"></i>
-                </button>
-                <button
-                  class="btn btn-outline-danger"
-                  (click)="confirmDeleteUser(user.id, user.firstName + ' ' + user.lastName)"
-                  title="Delete user"
+                <button class="btn-sm btn btn-danger"
+                  (click)="confirmDeleteUser(user.id, user.firstName + ' ' + user.lastName)" title="Delete user"
                   [disabled]="user.role === 'ADMIN' && isCurrentUser(user.id)">
-                  <i class="bi bi-trash"></i>
+                  <!-- <i class="bi bi-trash me-1"></i> -->
+                  Delete
                 </button>
               </div>
             </td>
@@ -184,9 +149,9 @@
         </tbody>
       </table>
     </div>
-    
+
     <!-- Table Footer with Pagination Info -->
-    <div class="card-footer bg-light">
+    <!-- <div class="card-footer bg-light">
       <div class="d-flex justify-content-between align-items-center">
         <small class="text-muted">
           Showing {{ filteredUsers.length }} of {{ users.length }} users
@@ -202,15 +167,12 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- Empty State -->
-  <app-empty-state
-    *ngIf="!isLoading && filteredUsers.length === 0 && users.length === 0"
-    title="No users found"
-    message="Get started by adding your first user to the system."
-    icon="bi-people">
+  <app-empty-state *ngIf="!isLoading && filteredUsers.length === 0 && users.length === 0" title="No users found"
+    message="Get started by adding your first user to the system." icon="bi-people">
     <a routerLink="/users/new" class="btn btn-primary">
       <i class="bi bi-person-plus me-2"></i>
       Add First User
@@ -218,11 +180,8 @@
   </app-empty-state>
 
   <!-- No Results State (when filtering) -->
-  <app-empty-state
-    *ngIf="!isLoading && filteredUsers.length === 0 && users.length > 0"
-    title="No matching users"
-    message="Try adjusting your search criteria or clear the filters."
-    icon="bi-funnel">
+  <app-empty-state *ngIf="!isLoading && filteredUsers.length === 0 && users.length > 0" title="No matching users"
+    message="Try adjusting your search criteria or clear the filters." icon="bi-funnel">
     <button class="btn btn-outline-primary" (click)="clearFilters()">
       <i class="bi bi-x-circle me-2"></i>
       Clear All Filters
@@ -286,7 +245,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [routerLink]="['/users/edit', selectedUser.id]" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-primary" [routerLink]="['/users/edit', selectedUser.id]"
+          data-bs-dismiss="modal">
           <i class="bi bi-pencil me-2"></i>
           Edit User
         </button>

@@ -40,5 +40,9 @@ export class BuildingService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
+  getBuildingChecklist(buildingId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${buildingId}/checklist-items`, { headers: this.getAuthHeaders() });
+  }
+
 
 }

@@ -1,0 +1,7 @@
+.nav-link {
+    color: aliceblue !important;
+}
+
+.nav-link.active {
+    background-color: #343a40;
+}
