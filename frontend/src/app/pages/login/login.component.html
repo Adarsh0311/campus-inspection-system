@@ -1,24 +1,28 @@
 <div class="row justify-content-center align-items-center" style="height: 90vh;">
+  <img src="assets/login_background.jpg" alt="Background Image" class="background-image"
+    style="position: fixed; top: 0; left: 0; width: 1010; height: 100%; object-fit: cover; opacity: 0.6; z-index: -1;" />
   <div class="col-md-6 col-lg-4">
     <div class="card shadow-sm">
 
-        <div class=" text-center bg-white">
-          <img src="assets/NWMSU_logo.png" alt="NWMSU Logo" height="100" width="275"/>
-        </div>
+      <div class=" text-center bg-white">
+        <img src="assets/NWMSU_logo.png" alt="NWMSU Logo" height="100" width="275" />
+      </div>
 
 
       <div class="card-body">
 
         <h3 class="card-title text-center mb-4">Sign In</h3>
-          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
         <form (ngSubmit)="handleSubmit()" #loginForm="ngForm">
           <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" required autocomplete="email"/>
+            <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" required
+              autocomplete="email" />
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required autocomplete="current-password" />
+            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required
+              autocomplete="current-password" />
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Sign In</button>
@@ -28,5 +32,3 @@
     </div>
   </div>
 </div>
-
-

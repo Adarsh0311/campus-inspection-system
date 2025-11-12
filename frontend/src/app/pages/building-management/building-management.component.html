@@ -61,7 +61,7 @@
         <thead class="table-secondary">
           <tr>
             <th>Building Name</th>
-            <th>Location</th>
+            <th>Status</th>
             <th>Checklist Items</th>
             <th>Last Updated</th>
             <th>Actions</th>
@@ -80,12 +80,10 @@
               </div>
             </td>
             <td>
-              <span class="text-muted" *ngIf="building.location; else noLocation">
-                <i class="bi bi-geo-alt me-1"></i>{{ building.location }}
+              <span  class="p-2" [ngClass]="building.isActive ? 'badge bg-success' : 'badge bg-danger'">
+                <!-- <i class="bi bi-check-circle me-1"></i> -->
+                {{ building.isActive ? 'Active' : 'Inactive' }}
               </span>
-              <ng-template #noLocation>
-                <span class="text-muted fst-italic">No location specified</span>
-              </ng-template>
             </td>
             <td>
               <span class="badge bg-light text-dark">
@@ -107,7 +105,7 @@
                 <button
                   class="btn-sm btn btn-danger"
                   (click)="onDeleteBuilding(building.id, building.name)"
-                  title="Delete building">
+                  title="Deactivate building">
                   <!-- <i class="bi bi-trash"></i> -->
                   Delete
                 </button>

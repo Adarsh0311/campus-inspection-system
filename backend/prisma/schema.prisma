@@ -61,7 +61,7 @@ model ChecklistItem {
 // Model for a single inspection event, linking a user, a building, and a date
 model Inspection {
   id   String   @id @default(cuid())
-  date DateTime @default(now())
+  date DateTime @db.Date
 
   userId String
   user   User   @relation(fields: [userId], references: [id])

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthService, UserPayload} from '../../services/auth.service';
 import {FormsModule} from "@angular/forms"; // 1. Import the service
@@ -14,7 +14,7 @@ import {Observable} from "rxjs";
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   email = '';
   password = '';
   error = '';
@@ -25,17 +25,29 @@ export class LoginComponent {
     this.currentUser = this.authService.currentUserValue;
   }
 
+
+  ngOnInit(): void {
+    // Any initialization logic can go here
+    this.navigate();
+  }
+
+  navigate() {
+    this.currentUser = this.authService.currentUserValue;
+     if (this.currentUser) {  
+        if (this.currentUser.role === 'ADMIN') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/inspector-dashboard']);
+        }
+      }
+  }
+
   handleSubmit() {
     this.error = '';
 
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
-        this.currentUser = this.authService.currentUserValue;
-        if (this.currentUser?.role === 'ADMIN') {
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.router.navigate(['/inspector-dashboard']);
-        }
+        this.navigate();
       },
       // This 'error' function is called if the API returns an error
       error: (err) => {

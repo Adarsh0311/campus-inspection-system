@@ -20,6 +20,7 @@ export class EditBuildingComponent implements OnInit {
   buildingName = '';
   buildingLocation = '';
   checklistItems: ChecklistItem[] = [];
+  buildingStatus!: boolean;
 
   // State for the "add new item" sub-form
   newQuestion = '';
@@ -55,6 +56,7 @@ export class EditBuildingComponent implements OnInit {
         this.buildingName = data.name;
         this.buildingLocation = data.location || '';
         this.checklistItems = data.checklistItems || [];
+        this.buildingStatus = data.isActive;
         // IMPORTANT: Make a deep copy of the original state for later comparison
         this.originalChecklist = JSON.parse(JSON.stringify(data.checklistItems || []));
         this.isLoading = false;
@@ -93,6 +95,7 @@ export class EditBuildingComponent implements OnInit {
     const payload: UpdateBuildingPayload = {
       name: this.buildingName,
       location: this.buildingLocation,
+      isActive: this.buildingStatus,
       checklistItems: {
         // Items in the current list that don't have an ID are new
         create: this.checklistItems.filter(item => !item.id),

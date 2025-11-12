@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { InspectionService, InspectionData } from '../../services/inspection.service';
 import { Building } from '../../models/building';
 import { FormsModule } from '@angular/forms';
@@ -7,11 +7,13 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { AuthService, UserPayload } from '../../services/auth.service';
+import { BackButtonComponent } from "../back-button/back-button.component";
+import { StartInspectionModalComponent } from '../../shared/components/inspection';
 
 @Component({
   selector: 'app-inspection-history',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, BackButtonComponent, StartInspectionModalComponent],
   templateUrl: './inspection-history.component.html',
   styleUrl: './inspection-history.component.css'
 })
@@ -24,6 +26,9 @@ export class InspectionHistoryComponent {
   endDate: string = '';
   buildingChecklistItems: { id: string, question: string }[] = [];
   currentUser: UserPayload | null = null;
+  selectedRange: string = 'all';
+
+  @ViewChild('startInspectionModal') startInspectionModal!: StartInspectionModalComponent;
 
   constructor(private inspectionService: InspectionService, private buis: BuildingService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
 
@@ -90,6 +95,7 @@ export class InspectionHistoryComponent {
       return;
     }
 
+    this.setFilterRange();
     this.updateQueryParams();
     this.loadBuildingChecklistItems(this.selectedBuildingId);
     this.inspectionService.getInspectionsByBuildingWithDateRange(this.selectedBuildingId, this.startDate, this.endDate).subscribe({
@@ -103,16 +109,30 @@ export class InspectionHistoryComponent {
     });
   }
 
+  setFilterRange(): void {
+    if (this.selectedRange === 'all') {
+      this.startDate = '';
+      this.endDate = '';
+
+    } else if (this.selectedRange === 'this_week') {
+      this.startDate = new Date().toISOString().split('T')[0];
+      const end = new Date();
+      end.setDate(end.getDate() - 7);
+      this.endDate = end.toISOString().split('T')[0];
+
+    } else if (this.selectedRange === 'this_month') {
+      this.startDate = new Date().toISOString().split('T')[0];
+      const end = new Date();
+      end.setDate(end.getDate() - 30);
+      this.endDate = end.toISOString().split('T')[0];
+    }
+
+  }
+
   // Helper method to get answer for a specific question in an inspection
   getAnswerForQuestion(inspection: InspectionData, questionItem: { id: string, question: string }): string {
     // First try to match by questionId if available
     let answer = inspection.answers.find(a => a.question === questionItem.question);
-
-    // If not found, try to match by question text (fallback)
-    if (!answer) {
-      answer = inspection.answers.find(a => a.question === questionItem.question);
-    }
-
     return answer ? answer.textAnswer : '';
   }
 
@@ -135,7 +155,7 @@ export class InspectionHistoryComponent {
       return true; // Admins can edit any inspection or users can edit their own inspections
     }
 
-    return false; 
+    return false;
   }
 
   downloadExcel(): void {
@@ -158,8 +178,8 @@ export class InspectionHistoryComponent {
       const row: any[] = [];
 
       // Add date
-      const date = new Date(inspection.date);
-      row.push(date.toLocaleDateString('en-US'));
+      const date = inspection.date;
+      row.push(date);
 
       // Add user
       row.push(inspection.user);
@@ -200,5 +220,20 @@ export class InspectionHistoryComponent {
     return new Date().toISOString().split('T')[0];
   }
 
+  onStartInspectionClick() {
+    this.startInspectionModal.show();
+  }
+
+    // Modal Event Handlers
+  onInspectionStarted(data: { buildingId: string; buildingName: string; date: string }) {
+    // Navigate to inspection form with the selected data
+    this.router.navigate(['/inspection/form'], {
+      queryParams: {
+        buildingId: data.buildingId,
+        buildingName: data.buildingName,
+        date: data.date
+      }
+    });
+  }
 
 }

@@ -23,11 +23,18 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">User Management</a>
         </li>
-        </ng-container>
-
         <li class="nav-item">
-          <a class="nav-link" routerLink="/inspector-dashboard" routerLinkActive="active">{{user.role == 'ADMIN' ? 'Inspection' : 'Home'}}</a>
+          <a class="nav-link" routerLink="/inspection/history" routerLinkActive="active">Inspection</a>
         </li>
+        </ng-container>
+        <ng-container *ngIf="user.role === 'TECHNICIAN'">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inspector-dashboard" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inspection/history" routerLinkActive="active">Inspection History</a>
+        </li>
+        </ng-container>
       </ul>
 
       <ul class="navbar-nav ms-auto">

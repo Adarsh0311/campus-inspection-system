@@ -1,44 +1,68 @@
 <!-- Filter Section -->
-<div class="filter-section">
-    <div class="filter-row">
-        <div class="filter-group">
-            <label for="buildingSelect">Building Name</label>
-            <select id="buildingSelect" [(ngModel)]="selectedBuildingId" class="form-select">
-                <option value="">Select Building</option>
-                <option *ngFor="let building of buildings" [value]="building.id">
-                    {{ building.name }}
-                </option>
-            </select>
-        </div>
 
-        <div class="filter-group">
-            <label for="startDate">From</label>
-            <input type="date" [max]="getMaxDate()" id="startDate" [(ngModel)]="startDate" class="form-control" />
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <!-- <app-back-button></app-back-button> -->
         </div>
-
-        <div class="filter-group">
-            <label for="endDate">To</label>
-            <input type="date" [max]="getMaxDate()" id="endDate" [(ngModel)]="endDate" class="form-control" />
-        </div>
-
-        <div class="filter-group">
-            <button class="btn btn-primary search-btn" (click)="searchInspections()">
-                Search
-            </button>
-        </div>
-        <div class="filter-group">
-            <button class="btn btn-success download-btn" [disabled]="!inspections || inspections.length === 0"
-                (click)="downloadExcel()">
-                Download Excel
-            </button>
+        <div class="col-md-6" style="text-align: end;">
+            <button class="btn btn-primary" (click)="onStartInspectionClick()">Start Inspection</button>
         </div>
     </div>
-</div>
+    <div class="card wt-100 p-3">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label for="buildingSelect">Building Name</label>
+                <select id="buildingSelect" [(ngModel)]="selectedBuildingId" class="form-select">
+                    <option value="">Select Building</option>
+                    <option *ngFor="let building of buildings" [value]="building.id">
+                        {{ building.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="range">Range</label>
+                <select id="range" [(ngModel)]="selectedRange" class="form-select">
+                    <option value="all" [selected]="selectedRange === 'all'">All</option>
+                    <option value="this_week" [selected]="selectedRange === 'this_week'">This Week</option>
+                    <option value="this_month" [selected]="selectedRange === 'this_month'">This Month</option>
+                    <option value="custom" [selected]="selectedRange === 'custom'">Custom</option>
+                </select>
+            </div>
+
+            <ng-container *ngIf="selectedRange === 'custom'">
+                <div class="filter-group">
+                    <label for="startDate">From</label>
+                    <input type="date" [max]="getMaxDate()" id="startDate" [(ngModel)]="startDate"
+                        class="form-control" />
+                </div>
+
+                <div class="filter-group">
+                    <label for="endDate">To</label>
+                    <input type="date" [max]="getMaxDate()" id="endDate" [(ngModel)]="endDate" class="form-control" />
+                </div>
+            </ng-container>
+
+            <div class="filter-group">
+                <button class="btn btn-primary search-btn" (click)="searchInspections()">
+                    Search
+                </button>
+            </div>
+            <div class="filter-group">
+                <button class="btn btn-success download-btn" [disabled]="!inspections || inspections.length === 0"
+                    (click)="downloadExcel()">
+                    Download Excel
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 <!-- Table Section -->
 <div class="table-wrapper">
     <div class="table-container">
-        <table *ngIf="inspections && inspections.length > 0" class="table table-bordered table-hover mb-0" style="font-size: 0.9rem;">
+        <table *ngIf="inspections && inspections.length > 0" class="table table-bordered table-hover mb-0"
+            style="font-size: 0.9rem;">
             <thead class="table-secondary">
                 <tr>
                     <th class="date-col">Date</th>
@@ -59,9 +83,10 @@
                             View
                         </button>
                         <!-- <ng-container *ngIf="canEditInspection(inspection)"> -->
-                            <button [disabled]="!canEditInspection(inspection)" class="btn btn-sm btn-warning" (click)="editInspection(inspection.id)">
-                                Edit
-                            </button>
+                        <button [disabled]="!canEditInspection(inspection)" class="btn btn-sm btn-warning"
+                            (click)="editInspection(inspection.id)">
+                            Edit
+                        </button>
                         <!-- </ng-container> -->
                     </td>
                 </tr>
@@ -73,6 +98,12 @@
         No inspections found.
     </div>
 </div>
+
+  <app-start-inspection-modal
+    #startInspectionModal
+    [userRole]="currentUser?.role || 'TECHNICIAN'"
+    (inspectionStarted)="onInspectionStarted($event)">
+  </app-start-inspection-modal>
 
 <style>
     .filter-section {
@@ -92,7 +123,7 @@
     .filter-group {
         display: flex;
         flex-direction: column;
-        min-width: 200px;
+        min-width: 150px;
     }
 
     .filter-group label {
@@ -149,7 +180,7 @@
         font-weight: 400;
         z-index: 10;
         padding: 12px; */
-        /* border: 1px solid #454d55;
+    /* border: 1px solid #454d55;
     } */
 
     /* Sticky columns */

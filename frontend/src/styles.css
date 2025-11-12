@@ -102,8 +102,8 @@ body {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
   border: none;
   border-radius: var(--border-radius);
-  padding: var(--spacing-3) var(--spacing-6);
-  font-weight: 500;
+  /* padding: var(--spacing-3) var(--spacing-6); */
+  /* font-weight: 500; */
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
 }

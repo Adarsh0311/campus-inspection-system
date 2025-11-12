@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackButtonComponent } from '../pages/back-button/back-button.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-user-form',
@@ -23,7 +24,7 @@ export class AddUserFormComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   handleSubmit(): void {
     this.successMessage = '';
@@ -47,6 +48,11 @@ export class AddUserFormComponent {
         this.email = '';
         this.password = '';
         this.role = 'TECHNICIAN'; // Reset to default role
+
+        setTimeout(() => {
+          this.successMessage = '';
+          this.router.navigate(['/users']);
+        }, 2000);
       },
       error: (err: HttpErrorResponse) => {
         this.errorMessage = err.error.error || 'Failed to create user. The email may already be in use.';
