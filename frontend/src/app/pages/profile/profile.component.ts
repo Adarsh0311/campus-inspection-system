@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.passwordForm = this.fb.group({
-      //currentPassword: ['', Validators.required],
+      currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(4)]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         this.isChangingPassword = false;
-        this.errorMessage = error.error?.message || 'Failed to change password';
+        this.errorMessage = error.error?.error || 'Failed to change password';
       }
     });
   }

@@ -70,6 +70,16 @@
 
         <div class="row">
           <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" formControlName="currentPassword"
+              [class.is-invalid]="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+            <div class="invalid-feedback"
+              *ngIf="passwordForm.get('currentPassword')?.errors?.['required'] && passwordForm.get('currentPassword')?.touched">
+              Current password is required
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
             <label for="newPassword" class="form-label">New Password</label>
             <input type="password" class="form-control" id="newPassword" formControlName="newPassword"
               [class.is-invalid]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">

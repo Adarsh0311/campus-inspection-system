@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, updateProfile} = require('../controllers/authController');
+const { registerUser, loginUser, updateProfile, handleChangePassword} = require('../controllers/authController');
 const {authMiddleware} = require("../middleware/authMiddleware");
 
 // Route for POST /api/auth/register
@@ -8,5 +8,6 @@ const {authMiddleware} = require("../middleware/authMiddleware");
 router.post('/login', loginUser);
 
 router.put('/profile/:id', authMiddleware, updateProfile);
+router.put('/change-password', authMiddleware, handleChangePassword)
 
 module.exports = router;
