@@ -40,7 +40,7 @@ export class BuildingManagementComponent implements OnInit {
 
   loadBuildings(): void {
     this.isLoading = true;
-    this.buildingService.getBuildings().subscribe({
+    this.buildingService.getAllBuildings().subscribe({
       next: (data) => {
         this.buildings = data;
         this.filteredBuildings = data;

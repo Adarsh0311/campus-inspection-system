@@ -43,9 +43,10 @@ declare var bootstrap: any;
                 class="form-control"
                 id="inspectionDate"
                 [(ngModel)]="selectedDate"
+                (ngModelChange)="onDateChange($event);"
                 name="inspectionDate"
                 [max]="maxDate"
-                [min]="maxDate"
+               
                 required>
               <div class="form-text">Select the date when the inspection will be performed</div>
             </div>
@@ -77,30 +78,7 @@ declare var bootstrap: any;
                   <span *ngIf="building.location"> - {{ building.location }}</span>
                 </option>
               </select>
-
-<!--              <div class="form-text" *ngIf="selectedBuilding">-->
-<!--                <i class="bi bi-info-circle me-1"></i>-->
-<!--                {{ selectedBuilding.checklistItems.length || 0 }} checklist items to complete-->
-<!--              </div>-->
             </div>
-
-            <!-- Building Info Preview -->
-<!--            <div *ngIf="selectedBuilding" class="card bg-light">-->
-<!--              <div class="card-body py-3">-->
-<!--                <h6 class="card-title mb-2">-->
-<!--                  <i class="bi bi-building me-2"></i>-->
-<!--                  {{ selectedBuilding.name }}-->
-<!--                </h6>-->
-<!--                <p class="card-text mb-2" *ngIf="selectedBuilding.location">-->
-<!--                  <i class="bi bi-geo-alt me-2 text-muted"></i>-->
-<!--                  {{ selectedBuilding.location }}-->
-<!--                </p>-->
-<!--                <small class="text-muted">-->
-<!--                  <i class="bi bi-list-check me-1"></i>-->
-<!--                  {{ selectedBuilding.checklistItems.length || 0 }} inspection items-->
-<!--                </small>-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
 
           <div class="modal-footer">
@@ -170,16 +148,31 @@ export class StartInspectionModalComponent implements OnInit {
 
   private modal: any;
 
+  
+
   constructor(private inspectionService: InspectionService, private buildingService: BuildingService) {
     // Set default date to today
-    this.selectedDate = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.getLocalDateString();
     // Set max date to today (prevent future dates)
-    this.maxDate = new Date().toISOString().split('T')[0];
+    this.maxDate = this.getLocalDateString();
+  }
+
+  onDateChange(event: any) {
+    console.log('Selected date changed to:', this.selectedDate);
+    console.log(event);
   }
 
   ngOnInit() {
     this.loadBuildings();
     this.initializeModal();
+  }
+
+  getLocalDateString(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   ngAfterViewInit() {
@@ -201,7 +194,7 @@ export class StartInspectionModalComponent implements OnInit {
     this.isLoadingBuildings = true;
     this.errorMessage = '';
 
-    this.buildingService.getBuildings().subscribe({
+    this.buildingService.getAllActiveBuildings().subscribe({
       next: (buildings) => {
         this.buildings = buildings;
         this.isLoadingBuildings = false;
@@ -257,7 +250,7 @@ export class StartInspectionModalComponent implements OnInit {
   }
 
   resetForm() {
-    this.selectedDate = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.getLocalDateString();
     this.selectedBuildingId = '';
     this.errorMessage = '';
     this.isStarting = false;

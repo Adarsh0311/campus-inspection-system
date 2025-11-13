@@ -84,7 +84,8 @@ export class ProfileComponent implements OnInit {
 
     const updateData = {
       firstName: this.profileForm.value.firstName,
-      lastName: this.profileForm.value.lastName
+      lastName: this.profileForm.value.lastName,
+      id: this.currentUser.userId,
     };
 
     this.authService.updateProfile(updateData).subscribe({

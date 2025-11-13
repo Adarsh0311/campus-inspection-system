@@ -22,7 +22,7 @@ declare var bootstrap: any;
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body" style="height: 20rem; overflow-y: auto;">
             <!-- Error Message -->
             <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
               <i class="bi bi-exclamation-triangle me-2"></i>
@@ -38,84 +38,28 @@ declare var bootstrap: any;
             </div>
 
             <!-- Buildings List -->
-            <div *ngIf="!isLoading && buildings.length > 0" class="row g-3">
               <div *ngFor="let building of buildings" class="col-12">
-                <div class="card h-100 border-start border-primary border-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <div>
+                    <div class="d-flex justify-content-between align-items-start mb-1">
                       <div class="flex-grow-1">
                         <h6 class="card-title mb-2">
                           <i class="bi bi-building me-2 text-primary"></i>
                           {{ building.name }}
                         </h6>
-
-                        <div class="mb-2" *ngIf="building.location">
-                          <small class="text-muted">
-                            <i class="bi bi-geo-alt me-1"></i>
-                            {{ building.location }}
-                          </small>
-                        </div>
-
-                        <div class="mb-2">
-                          <span class="badge bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-list-check me-1"></i>
-                            {{ building?.checklistItems?.length }} checklist items
-                          </span>
-                        </div>
                       </div>
 
                       <div class="text-end">
                         <div class="building-status">
-                          <i class="bi bi-check-circle text-success" title="Active building"></i>
+                          <i [ngClass]="building.isActive ? 'bi bi-check-circle text-success' : 'bi bi-x-circle text-danger'" [title]="building.isActive ? 'Active building' : 'Inactive building'"></i>
                         </div>
                       </div>
                     </div>
 
-                    <!-- Building Details -->
-                    <div class="row g-2 text-sm">
-                      <div class="col-6">
-                        <small class="text-muted">
-                          <strong>Created:</strong><br>
-                          {{ building.createdAt | date:'short' }}
-                        </small>
-                      </div>
-                      <div class="col-6">
-                        <small class="text-muted">
-                          <strong>Updated:</strong><br>
-                          {{ building.updatedAt | date:'short' }}
-                        </small>
-                      </div>
-                    </div>
-
-                    <!-- Checklist Preview -->
-                    <div *ngIf="building?.checklistItems?.length" class="mt-3">
-                      <small class="text-muted d-block mb-2">
-                        <strong>Sample Checklist Items:</strong>
-                      </small>
-                      <div class="checklist-preview">
-                        <div *ngFor="let item of building.checklistItems.slice(0, 3)" class="small text-muted mb-1">
-                          <i class="bi"
-                             [class]="getQuestionTypeIcon(item.type)"
-                             class="me-1"></i>
-                          {{ item.question }}
-                        </div>
-                        <div *ngIf="building.checklistItems.length > 3" class="small text-muted fst-italic">
-                          ... and {{ building.checklistItems.length - 3 }} more items
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Empty checklist message -->
-                    <div *ngIf="building.checklistItems.length === 0" class="mt-3">
-                      <small class="text-muted fst-italic">
-                        <i class="bi bi-info-circle me-1"></i>
-                        No checklist items configured yet
-                      </small>
-                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            
 
             <!-- Empty State -->
             <div *ngIf="!isLoading && buildings.length === 0" class="text-center py-5">
@@ -224,7 +168,7 @@ export class AllBuildingsModalComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.buildingService.getBuildings().subscribe({
+    this.buildingService.getAllBuildings().subscribe({
       next: (buildings) => {
         this.buildings = buildings;
         this.isLoading = false;

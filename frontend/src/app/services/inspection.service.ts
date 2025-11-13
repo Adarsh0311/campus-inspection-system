@@ -43,7 +43,7 @@ export class InspectionService {
 
 
   updateInspection(id: string, inspectionData: Partial<InspectionData>): Observable<InspectionData> {
-    return this.http.put<InspectionData>(`${this.apiUrl}/inspections/${id}`, inspectionData);
+    return this.http.put<InspectionData>(`${this.apiUrl}/${id}`, inspectionData, { headers: this.getAuthHeaders() });
   }
 
   getInspectionById(id: string): Observable<InspectionData> {
@@ -52,7 +52,7 @@ export class InspectionService {
 
 
   deleteInspection(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/inspections/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
   createInspection(createInspectionRequest: CreateInspectionRequest): Observable<any> {
@@ -64,7 +64,7 @@ export class InspectionService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getInspectionsByBuildingWithDateRange(buildingId: string, startDate?: string, endDate?: string): Observable<InspectionData[]> {
+  getInspectionsByBuildingWithDateRange(buildingId: string, userId: string, startDate?: string, endDate?: string): Observable<InspectionData[]> {
     let url = `${this.apiUrl}/buildings/${buildingId}`;
     const params = new URLSearchParams();
     if (startDate) {
@@ -72,6 +72,10 @@ export class InspectionService {
     }
     if (endDate) {
       params.append('endDate', endDate);
+    }
+
+    if (userId && userId !== 'All') {
+      params.append('userId', userId);
     }
 
     if (params.toString()) {

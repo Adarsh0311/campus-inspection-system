@@ -19,8 +19,12 @@ export class BuildingService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getBuildings(): Observable<Building[]> {
+  getAllBuildings(): Observable<Building[]> {
     return this.http.get<Building[]>(this.apiUrl, { headers: this.getAuthHeaders() });
+  }
+
+  getAllActiveBuildings(): Observable<Building[]> {
+    return this.http.get<Building[]>(`${this.apiUrl}/active`, { headers: this.getAuthHeaders() });
   }
 
   // --- NEW: Method for creating a building with its checklist ---

@@ -9,11 +9,14 @@ import * as XLSX from 'xlsx';
 import { AuthService, UserPayload } from '../../services/auth.service';
 import { BackButtonComponent } from "../back-button/back-button.component";
 import { StartInspectionModalComponent } from '../../shared/components/inspection';
+import { UserService } from '../../services/user.service';
+
+
 
 @Component({
   selector: 'app-inspection-history',
   standalone: true,
-  imports: [FormsModule, CommonModule, BackButtonComponent, StartInspectionModalComponent],
+  imports: [FormsModule, CommonModule, BackButtonComponent, StartInspectionModalComponent, FormsModule],
   templateUrl: './inspection-history.component.html',
   styleUrl: './inspection-history.component.css'
 })
@@ -26,19 +29,34 @@ export class InspectionHistoryComponent {
   endDate: string = '';
   buildingChecklistItems: { id: string, question: string }[] = [];
   currentUser: UserPayload | null = null;
-  selectedRange: string = 'all';
+  selectedRange: string = 'this_month';
 
   @ViewChild('startInspectionModal') startInspectionModal!: StartInspectionModalComponent;
+  users: any[] = []; // Add this line
+  userId: string = 'All'; // Add this line
+  errorMessage: string = '';
+  //userFilter: string = 'All';
 
-  constructor(private inspectionService: InspectionService, private buis: BuildingService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+  constructor(private inspectionService: InspectionService, private buis: BuildingService, private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.currentUser = this.authService.currentUserValue;
     this.loadBuildings();
+    this.loadUsers();
     this.route.queryParams.subscribe(params => {
       this.selectedBuildingId = params['buildingId'] || '';
       if (this.selectedBuildingId) {
         this.searchInspections();
+      }
+    });
+  }
+  loadUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
       }
     });
   }
@@ -58,7 +76,7 @@ export class InspectionHistoryComponent {
 
   loadBuildings(): void {
     // Replace with your actual buildings API endpoint
-    this.buis.getBuildings().subscribe({
+    this.buis.getAllBuildings().subscribe({
       next: (data) => {
         this.buildings = data;
       },
@@ -68,26 +86,6 @@ export class InspectionHistoryComponent {
     });
   }
 
-  updateQueryParams(): void {
-    const queryParams: any = {};
-    if (this.selectedBuildingId) {
-      queryParams['buildingId'] = this.selectedBuildingId;
-    }
-    if (this.startDate) {
-      queryParams['startDate'] = this.startDate;
-    }
-    if (this.endDate) {
-      queryParams['endDate'] = this.endDate;
-    }
-    // Implement logic to update the URL with queryParams if needed
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge', // Merge with existing params if needed, or use '' to replace all
-      replaceUrl: true // Don't add to browser history
-    });
-  }
 
   searchInspections(): void {
     if (!this.selectedBuildingId) {
@@ -96,14 +94,14 @@ export class InspectionHistoryComponent {
     }
 
     this.setFilterRange();
-    this.updateQueryParams();
+    //this.updateQueryParams();
     this.loadBuildingChecklistItems(this.selectedBuildingId);
-    this.inspectionService.getInspectionsByBuildingWithDateRange(this.selectedBuildingId, this.startDate, this.endDate).subscribe({
+    this.inspectionService.getInspectionsByBuildingWithDateRange(this.selectedBuildingId, this.userId, this.startDate, this.endDate).subscribe({
       next: (data) => {
         this.inspections = data;
       },
       error: (error) => {
-        alert('Error loading inspections');
+        this.errorMessage = 'Error loading inspections';
         console.error('Error loading inspections:', error);
       }
     });
@@ -129,9 +127,8 @@ export class InspectionHistoryComponent {
 
   }
 
-  // Helper method to get answer for a specific question in an inspection
+
   getAnswerForQuestion(inspection: InspectionData, questionItem: { id: string, question: string }): string {
-    // First try to match by questionId if available
     let answer = inspection.answers.find(a => a.question === questionItem.question);
     return answer ? answer.textAnswer : '';
   }
@@ -142,8 +139,7 @@ export class InspectionHistoryComponent {
   }
 
   editInspection(id: string): void {
-    console.log('Edit inspection:', id);
-    // Implement edit logic
+    this.router.navigate(['/inspection/edit', id]);
   }
 
   canEditInspection(inspection: InspectionData): boolean {
@@ -178,7 +174,7 @@ export class InspectionHistoryComponent {
       const row: any[] = [];
 
       // Add date
-      const date = inspection.date;
+      const date = new Date(inspection.date).toISOString().split('T')[0];
       row.push(date);
 
       // Add user

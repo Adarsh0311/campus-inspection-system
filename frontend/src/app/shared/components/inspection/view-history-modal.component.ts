@@ -221,7 +221,7 @@ export class ViewHistoryModalComponent implements OnInit {
     this.isLoadingBuildings = true;
     this.errorMessage = '';
 
-    this.buildingService.getBuildings().subscribe({
+    this.buildingService.getAllBuildings().subscribe({
       next: (buildings) => {
         this.buildings = buildings;
         this.isLoadingBuildings = false;

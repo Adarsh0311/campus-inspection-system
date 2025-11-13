@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
   loadBuildings() {
     this.isLoadingBuildings = true;
 
-    this.buildingService.getBuildings().subscribe({
+    this.buildingService.getAllBuildings().subscribe({
       next: (buildings) => {
         this.totalBuildings = buildings.length;
         // Get the 5 most recent buildings

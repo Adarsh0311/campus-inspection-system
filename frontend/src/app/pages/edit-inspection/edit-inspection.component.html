@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <div *ngIf="inspection" class="inspection-detail">
+        <div class="card mb-3 w-100">
+
+            <div class="row p-2">
+
+                <p *ngIf="inspection.building" class="m-3">
+                    <!-- <app-back-button></app-back-button> -->
+                    <span><strong>Building:</strong> {{ inspection.building.name }}</span> &nbsp; | &nbsp;
+                    <span><strong>Submitted By:</strong> {{ inspection.user }}</span> &nbsp; | &nbsp;
+                    <span><strong>Date:</strong> {{ inspection.date | date: 'MM/dd/yyyy' }}</span>
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card mb-3 w-100 p-2">
+            <div class="row">
+                <div class="col-md-4" *ngFor="let answer of inspection.answers">
+                    <div class="mb-1">
+                        <div class="card-body">
+                            <label>{{ answer.question }}</label>
+                            <textarea class="form-control" [(ngModel)]="answer.textAnswer"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-3 text-end">
+                <button class="btn btn-secondary me-2" (click)="goBack()">Cancel</button>
+                <button class="btn btn-success" (click)="updateInspectionAnswers()">Save Changes</button>
+            </div>
+        </div>
+
+
+
+    </div>

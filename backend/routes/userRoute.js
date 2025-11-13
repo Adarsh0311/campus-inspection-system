@@ -4,7 +4,7 @@ const { getUsers, getUserById, updateUser, deactivateUser, registerUser, getUser
 
 
 router.route('/')
-    .get(adminMiddleware, getUsers)
+    .get(getUsers)
     .post(adminMiddleware, registerUser);
 
 router.route('/:id')

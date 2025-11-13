@@ -1,4 +1,5 @@
 const inspectionService = require('../services/inspectionService');
+const {use} = require("express/lib/application");
 
 async function handleSubmitInspection(req, res) {
     try {
@@ -19,9 +20,9 @@ async function handleSubmitInspection(req, res) {
 async function handleGetInspectionHistoryByBuildingAndDateRange(req, res) {
     try {
         const buildingId = req.params.buildingId;
-        const { startDate, endDate } = req.query;
+        const { startDate, endDate, userId } = req.query;
         const inspections = await inspectionService
-                                                                .getInspectionHistoryByBuildingAndDateRange(buildingId, startDate, endDate);
+                                                                .getInspectionHistoryByBuildingAndDateRange(buildingId, startDate, endDate, userId);
         return res.status(200).json(inspections);
     } catch (error) {
         console.error('Error fetching inspection history:', error);
@@ -43,4 +44,22 @@ async function handleGetInspectionById(req, res) {
     }
 }
 
-module.exports = { handleSubmitInspection, handleGetInspectionHistoryByBuildingAndDateRange, handleGetInspectionById };
+async function handleUpdateInspection(req, res) {
+    const {id} = req.params;
+    const updatedInspectionData = req.body;
+
+    try {
+        const updatedInspection = await inspectionService.updateInspection(id, updatedInspectionData);
+        return res.status(200).json(updatedInspection);
+    } catch (error) {
+        console.error('Error updating inspection:', error);
+        res.status(500).json({error: 'An error occurred while updating the inspection.'});
+    }
+}
+
+module.exports = {
+    handleSubmitInspection,
+    handleGetInspectionHistoryByBuildingAndDateRange,
+    handleGetInspectionById,
+    handleUpdateInspection
+};

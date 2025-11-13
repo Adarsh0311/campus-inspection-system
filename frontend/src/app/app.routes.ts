@@ -14,6 +14,7 @@ import { InspectionHistoryComponent } from './pages/inspection-history/inspectio
 import { ProfileComponent } from './pages/profile/profile.component';
 import { EditUserComponent } from './pages/edit-user/edit-user.component';
 import { InspectionDetailComponent } from './pages/inspection-detail/inspection-detail.component';
+import { EditInspectionComponent } from './pages/edit-inspection/edit-inspection.component';
 
 
 export const routes: Routes = [
@@ -43,6 +44,7 @@ export const routes: Routes = [
       { path: 'form', component: InspectionFormComponent, title: 'Inspection Form' },
       { path: 'history', component: InspectionHistoryComponent, title: 'Inspection History' },
       { path: 'detail/:id', component: InspectionDetailComponent, title: 'Inspection Detail' },
+      { path: 'edit/:id', component: EditInspectionComponent, title: 'Edit Inspection' },
       // Add history component later when needed
     ]
   },

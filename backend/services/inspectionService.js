@@ -28,7 +28,7 @@ function toUTCDateOnly(dateStr) {
  * @param endDate
  * @returns {Promise<GetFindResult<Prisma.$InspectionPayload<DefaultArgs>, {where: {buildingId: *, date: {gte: *, lte: *}}, include: {inspectionAnswers: boolean}}, Prisma.PrismaClientOptions>[]>}
  */
-async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate, endDate) {
+async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate, endDate, userId) {
     const sDate = startDate ? toUTCDateOnly(startDate) : undefined;
     const eDate = endDate ? toUTCDateOnly(endDate) : undefined;
 
@@ -42,9 +42,12 @@ async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate,
         dateFilter.gte = eDate;
     }
 
+    userId = userId !== 'All' ? userId : undefined;
+
     const inspections = await prisma.inspection.findMany({
         where: {
             buildingId,
+            userId: userId,
             ...(Object.keys(dateFilter).length ? { date: dateFilter } : {}),
         },
         select: {
@@ -68,7 +71,8 @@ async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate,
                     textAnswer: true
                 }
             }
-        }
+        },
+        orderBy: { date: 'desc' }
     });
 
 
@@ -127,6 +131,7 @@ async function getInspectionById(inspectionId) {
                             question: true
                         }
                     },
+                    id: true,
                     textAnswer: true
                 }
             }
@@ -137,6 +142,7 @@ async function getInspectionById(inspectionId) {
 
         //defining new structure for answers
         return {
+            id: answer.id,
             question: answer.checklistItem.question,
             textAnswer: answer.textAnswer
         };
@@ -147,6 +153,7 @@ async function getInspectionById(inspectionId) {
 
     return {
         ...inspection,
+        date: inspection.date.toISOString().slice(0, 10), // show YYYY-MM-DD only
         user: name,
         answers: formatedAnswers
     }
@@ -199,4 +206,26 @@ async function createInspection( inspectionData) {
 }
 
 
-module.exports = { submitInspection, getInspectionHistoryByBuildingAndDateRange, getBuildingInspectionsByUserId, getInspectionById };
+async function updateInspection(inspectionId, updateData) {
+    const answers = updateData.answers;
+
+    return  prisma.$transaction(async (prisma) => {
+        for (const answer of answers) {
+            await prisma.inspectionAnswer.update({
+                where: { id: answer.id },
+                data: { textAnswer: answer.textAnswer },
+            });
+        }
+    })
+
+
+}
+
+
+module.exports = {
+    submitInspection,
+    getInspectionHistoryByBuildingAndDateRange,
+    getBuildingInspectionsByUserId,
+    getInspectionById ,
+    updateInspection
+};

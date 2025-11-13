@@ -78,12 +78,29 @@ export class AuthService {
     return !this.isTokenExpired(token);
   }
 
-  updateProfile(data: { firstName: string; lastName: string }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/profile`, data);
+  updateProfile(data: { id: string; firstName: string; lastName: string }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/${data.id}`, data, { headers: this.getAuthHeaders() }).pipe(
+      tap((response) => {
+        // Update the current user subject with new profile data
+        const updatedUser = this.currentUserValue;
+        if (updatedUser) {
+          updatedUser.firstName = response.firstName;
+          updatedUser.lastName = response.lastName;
+          this.currentUserSubject.next(updatedUser);
+        }
+      })
+    );
+  }
+
+  getAuthHeaders(): { [header: string]: string } {
+    const token = this.getToken();
+    return {
+      'Authorization': `Bearer ${token}`
+    };
   }
 
   changePassword(data: { currentPassword: string; newPassword: string }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/change-password`, data);
+    return this.http.put(`${this.apiUrl}/change-password`, data, { headers: this.getAuthHeaders() });
   }
 
   private isTokenExpired(token?: string): boolean {

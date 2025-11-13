@@ -48,6 +48,12 @@ async function getAllBuildings() {
     return prisma.building.findMany({});
 }
 
+async function getAllActiveBuildings() {
+    return prisma.building.findMany({
+        where: {isActive: true},
+    });
+}
+
 async function getBuildingById(id) {
     return prisma.building.findUnique({
         where: {id: id},
@@ -129,5 +135,5 @@ async function updateBuilding(id, updatedBuildingData) {
 }
 
 module.exports = {
-    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding, getBuildingChecklistItems
+    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding, getBuildingChecklistItems, getAllActiveBuildings
 }

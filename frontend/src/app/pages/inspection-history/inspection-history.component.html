@@ -1,12 +1,26 @@
 <!-- Filter Section -->
 
-    <div class="row mb-2">
+    <!-- <div class="row mb-2">
         <div class="col-md-6">
-            <!-- <app-back-button></app-back-button> -->
+            <app-back-button></app-back-button>
         </div>
         <div class="col-md-6" style="text-align: end;">
             <button class="btn btn-primary" (click)="onStartInspectionClick()">Start Inspection</button>
         </div>
+    </div> -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="h4 mb-0">Inspections Overview</h2>
+      <small class="text-muted">{{ inspections.length }} total inspections</small>
+    </div>
+    <a (click)="onStartInspectionClick()" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>
+      Start Inspection
+    </a>
+  </div>
+    <div class="row" *ngIf="errorMessage">
+        <span class="alert alert-danger">{{ errorMessage }}</span>
     </div>
     <div class="card wt-100 p-3">
         <div class="filter-row">
@@ -16,16 +30,27 @@
                     <option value="">Select Building</option>
                     <option *ngFor="let building of buildings" [value]="building.id">
                         {{ building.name }}
+                        <span *ngIf="!building.isActive" class="badge bg-warning text-dark">(Inactive) </span>
                     </option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label for="range">Range</label>
+                <label for="submittedBy">Submitted By</label>
+                <select id="submittedBy" [(ngModel)]="userId" class="form-select">
+                    <option value="All" [selected]="userId === 'All'">All</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.firstName }} {{ user.lastName }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="range">Date Range</label>
                 <select id="range" [(ngModel)]="selectedRange" class="form-select">
                     <option value="all" [selected]="selectedRange === 'all'">All</option>
-                    <option value="this_week" [selected]="selectedRange === 'this_week'">This Week</option>
-                    <option value="this_month" [selected]="selectedRange === 'this_month'">This Month</option>
+                    <option value="this_week" [selected]="selectedRange === 'this_week'">Last 7 Days</option>
+                    <option value="this_month" [selected]="selectedRange === 'this_month'">Last 30 Days</option>
                     <option value="custom" [selected]="selectedRange === 'custom'">Custom</option>
                 </select>
             </div>
@@ -79,7 +104,7 @@
                         {{ getAnswerForQuestion(inspection, q) }}
                     </td>
                     <td class="action-col">
-                        <button class="btn btn-sm btn-info" (click)="viewInspection(inspection.id)">
+                        <button class="btn btn-sm btn-success" (click)="viewInspection(inspection.id)">
                             View
                         </button>
                         <!-- <ng-container *ngIf="canEditInspection(inspection)"> -->

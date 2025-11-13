@@ -7,11 +7,12 @@ import {CreateInspectionRequest} from "../../models/inspection.model";
 import {BuildingService}  from "../../services/building.service";
 import {Building} from "../../models/building";
 import {AuthService} from "../../services/auth.service";
+import { BackButtonComponent } from "../back-button/back-button.component";
 
 @Component({
   selector: 'app-inspection-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BackButtonComponent],
   templateUrl: './inspection-form.component.html',
   styleUrls: ['./inspection-form.component.css']
 })

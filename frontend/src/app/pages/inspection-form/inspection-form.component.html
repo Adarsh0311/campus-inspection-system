@@ -3,10 +3,12 @@
   <div class="inspection-header">
     <div class="container">
       <div class="header-content">
-        <button (click)="navigateBack()" class="btn btn-outline-light me-3" type="button">
+        <!-- <button (click)="navigateBack()" class="btn btn-outline-light me-3" type="button">
           <i class="bi bi-arrow-left me-2"></i>
           Back
-        </button>
+        </button> -->
+
+        <app-back-button [className]="'btn btn-outline-light me-3'"></app-back-button>
 
         <div class="inspection-info">
           <h5>{{ buildingName }}</h5>

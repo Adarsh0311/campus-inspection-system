@@ -90,6 +90,17 @@ async function handleGetBuildingChecklistItems(req, res) {
 }
 
 
+async function handleGetAllActiveBuildings(req, res) {
+    try {
+        const buildings = await buildingService.getAllActiveBuildings();
+        res.status(200).json(buildings);
+    } catch (error) {
+        console.error('Error fetching active buildings:', error);
+        res.status(500).json({error: 'An error occurred while fetching active buildings.'});
+    }
+}
+
+
 module.exports = {
-    handleCreateBuilding, handleGetAllBuildings, handleGetBuildingById, handleUpdateBuilding, handleDeleteBuilding, handleGetBuildingChecklistItems
+    handleCreateBuilding, handleGetAllBuildings, handleGetBuildingById, handleUpdateBuilding, handleDeleteBuilding, handleGetBuildingChecklistItems, handleGetAllActiveBuildings
 };

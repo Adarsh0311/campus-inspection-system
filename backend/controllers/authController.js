@@ -44,5 +44,26 @@ async function loginUser(req, res) {
 
 }
 
+async function updateProfile(req, res) {
+    const {id} = req.params;
+    const {firstName, lastName } = req.body;
 
-module.exports = {loginUser};
+    try {
+        const updatedUser = await prisma.user.update({
+            where: {id: id},
+            data: {
+                firstName,
+                lastName
+            },
+            select: {firstName: true, lastName: true}
+        });
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        res.status(500).json({error: 'An error occurred while updating the user profile.'});
+    }
+
+}
+
+
+module.exports = {loginUser, updateProfile};

@@ -3,7 +3,7 @@ const router = express.Router();
 const {
     handleCreateBuilding,
     handleGetBuildingById,
-    handleGetAllBuildings, handleUpdateBuilding, handleDeleteBuilding, handleGetBuildingChecklistItems
+    handleGetAllBuildings, handleUpdateBuilding, handleDeleteBuilding, handleGetBuildingChecklistItems, handleGetAllActiveBuildings
 } = require('../controllers/buildingController');
 
 
@@ -11,6 +11,9 @@ const {
 router.route('/')
     .post(handleCreateBuilding)
     .get(handleGetAllBuildings);
+
+router.route('/active')
+    .get(handleGetAllActiveBuildings);
 
 router.route('/:id')
     .get(handleGetBuildingById)

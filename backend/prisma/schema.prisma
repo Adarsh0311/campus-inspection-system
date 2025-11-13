@@ -114,6 +114,14 @@ model Issue {
   @@map("issues")
 }
 
+model DataCategory {
+  id   String @id @default(cuid())
+  name String @unique
+  position Int
+
+  @@map("data_categories")
+}
+
 // --- Enums for predefined types ---
 
 enum Role {
