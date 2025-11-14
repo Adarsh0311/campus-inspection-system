@@ -126,7 +126,7 @@ declare var bootstrap: any;
             </button>
             <button
               type="button"
-              class="btn" style="background-color: green; color:white;"
+              class="btn btn-success"
               (click)="viewHistory()"
               [disabled]="!selectedBuildingId || isLoading">
               <span *ngIf="!isLoading">

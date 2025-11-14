@@ -27,26 +27,26 @@
 
 
   <div class="card bg-light p-3 mb-3">
-    <h6>Data Categories</h6>
+    <h5>Inspection Checklist</h5>
     <ul class="list-group mb-3">
       <li *ngFor="let item of checklistItems; let i = index"
         class="list-group-item d-flex justify-content-between align-items-center">
         <span>{{ item.question }} <span class="badge bg-secondary">{{ item.type }}</span></span>
         <button type="button" class="btn btn-sm btn-outline-danger" (click)="handleRemoveItem(i)">Remove</button>
       </li>
-      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No data categories yet.</li>
+      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No data inspection item yet.</li>
     </ul>
   </div>
 
   <div class="card bg-light p-3 mb-3">
-    <h6>Add New Category</h6>
+    <h5>Add New Item</h5>
     <div class="row g-3 align-items-end">
       <div class="col-md-6">
-        <label for="newQuestion" class="form-label">Name</label>
+        <label for="newQuestion" class="form-label">Inspection Item</label>
         <input type="text" class="form-control" id="newQuestion" [(ngModel)]="newQuestion" name="newQuestion">
       </div>
       <div class="col-md-4">
-        <label for="newQuestionType" class="form-label">Type</label>
+        <label for="newQuestionType" class="form-label">Input Type</label>
         <select id="newQuestionType" class="form-select" [(ngModel)]="newQuestionType" name="newQuestionType">
           <option value="TEXT">Text</option>
           <option value="BOOLEAN">Yes/No</option>
