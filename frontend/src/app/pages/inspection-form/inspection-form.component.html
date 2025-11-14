@@ -3,15 +3,11 @@
   <div class="inspection-header">
     <div class="container">
       <div class="header-content">
-        <!-- <button (click)="navigateBack()" class="btn btn-outline-light me-3" type="button">
-          <i class="bi bi-arrow-left me-2"></i>
-          Back
-        </button> -->
 
         <app-back-button [className]="'btn btn-outline-light me-3'"></app-back-button>
 
         <div class="inspection-info">
-          <h5>{{ buildingName }}</h5>
+          <h4 class="mb-1">{{ buildingName }}</h4>
           <p class="inspection-subtitle">
             <i class="bi bi-calendar me-2"></i>
             {{ inspectionDate | date:'fullDate' }}
@@ -28,16 +24,14 @@
   <!-- Loading State -->
   <div *ngIf="isLoading" class="container">
     <div class="loading-section">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <div class="mt-3">Loading inspection form...</div>
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3">Loading inspection form...</p>
     </div>
   </div>
 
-  <!-- Error State -->
+  <!-- Error Message -->
   <div *ngIf="errorMessage && !isLoading" class="container">
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger">
       <i class="bi bi-exclamation-triangle me-2"></i>
       {{ errorMessage }}
     </div>
@@ -45,65 +39,121 @@
 
   <!-- Success Message -->
   <div *ngIf="successMessage" class="container">
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success">
       <i class="bi bi-check-circle me-2"></i>
       {{ successMessage }}
     </div>
   </div>
 
   <!-- Main Form -->
-  <div *ngIf="!isLoading && building" class="container">
-    <div class="row">
+  <div *ngIf="!isLoading && building" class="container py-4">
 
-      <!-- Main Question Area -->
+    <div class="card p-4 shadow-sm mb-4">
+      <h4 class="fw-semibold mb-3">Inspection Checklist</h4>
+      <p class="text-muted mb-0">Please complete each question below.</p>
+    </div>
 
-      <div *ngFor="let currentQuestion of building.checklistItems " class="col-lg-4 col-md-6 col-sm-6 mb-3">
-        <div class="form-group">
-          <label>
+    <div class="row g-4">
+      <!-- Question Card -->
+      <div
+        *ngFor="let currentQuestion of building.checklistItems"
+        class="col-lg-6 col-md-12"
+      >
+        <div class="card question-card shadow-sm p-3">
+
+          <label class="fw-semibold mb-2">
             {{ currentQuestion.question }}
           </label>
 
-          <div *ngIf="currentQuestion.type.toLowerCase() === 'boolean'">
-            <select name="{{currentQuestion.id}}_{{currentQuestion.question}}"
-              [(ngModel)]="responses[currentQuestion.id]" class="form-select">
-              <option ngValue="Yes">Yes</option>
-              <option ngValue="No">No</option>
-            </select>
+<!-- Boolean as Horizontal Checkboxes -->
+<div *ngIf="currentQuestion.type.toLowerCase() === 'boolean'" class="mt-2">
+
+  <div class="d-flex align-items-center gap-4">
+
+    <!-- YES checkbox -->
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        [id]="currentQuestion.id + '_yes'"
+        [checked]="responses[currentQuestion.id] === 'Yes'"
+        (change)="responses[currentQuestion.id] = $any($event.target).checked ? 'Yes' : null"
+      />
+      <label class="form-check-label ms-1" [for]="currentQuestion.id + '_yes'">
+        Yes
+      </label>
+    </div>
+
+    <!-- NO checkbox -->
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        [id]="currentQuestion.id + '_no'"
+        [checked]="responses[currentQuestion.id] === 'No'"
+        (change)="responses[currentQuestion.id] = $any($event.target).checked ? 'No' : null"
+      />
+      <label class="form-check-label ms-1" [for]="currentQuestion.id + '_no'">
+        No
+      </label>
+    </div>
+
+  </div>
+
+</div>
+
+
+          <!-- Numeric -->
+          <div *ngIf="currentQuestion.type.toLowerCase() === 'numeric'">
+            <input
+              type="number"
+              class="form-control"
+              name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+              [ngModel]="responses[currentQuestion.id]"
+              (ngModelChange)="responses[currentQuestion.id] = $event == null ? '' : String($event)"
+            />
           </div>
-        </div>
-        <div *ngIf="currentQuestion.type.toLowerCase() === 'numeric'">
-          <input type="number" name="{{currentQuestion.id}}_{{currentQuestion.question}}"
-            id="{{currentQuestion.id}}_{{currentQuestion.question}}" [ngModel]="responses[currentQuestion.id]"
-            (ngModelChange)="responses[currentQuestion.id] = $event == null ? '' : String($event)"
-            class="form-control" />
-        </div>
-        <div *ngIf="currentQuestion.type.toLowerCase() === 'text'">
-          <textarea *ngIf="isTextAreaQuestion(currentQuestion); else singleLine" class="form-control"
-            [(ngModel)]="responses[currentQuestion.id]" name="{{currentQuestion.id}}_{{currentQuestion.question}}"></textarea>
 
-          <!-- Else show input -->
-          <ng-template #singleLine>
-            <input type="text" name="{{currentQuestion.id}}_{{currentQuestion.question}}"
-            id="{{currentQuestion.id}}_{{currentQuestion.question}}" [(ngModel)]="responses[currentQuestion.id]"
-            class="form-control" />
-          </ng-template>
+          <!-- Text -->
+          <div *ngIf="currentQuestion.type.toLowerCase() === 'text'">
+            <textarea
+              *ngIf="isTextAreaQuestion(currentQuestion); else singleLine"
+              class="form-control"
+              name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+              [(ngModel)]="responses[currentQuestion.id]"
+            ></textarea>
 
-          
+            <ng-template #singleLine>
+              <input
+                type="text"
+                class="form-control"
+                name="{{currentQuestion.id}}_{{currentQuestion.question}}"
+                [(ngModel)]="responses[currentQuestion.id]"
+              />
+            </ng-template>
+          </div>
 
         </div>
-      </div>
-      <div class="row mt-4 mb-5">
-        <button (click)="submitInspection()" [disabled]="!isFormValid() || isSaving || isSubmitting"
-          class="btn btn-success" type="button">
-          <span *ngIf="!isSubmitting">
-            <i class="bi bi-check-circle me-2"></i>
-            Submit Inspection
-          </span>
-          <span *ngIf="isSubmitting">
-            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-            Submitting...
-          </span>
-        </button>
       </div>
     </div>
+
+    <!-- Submit Button -->
+    <div class="text-center mt-5">
+      <button
+        type="button"
+        class="btn btn-success px-4 py-2 d-inline-flex align-items-center gap-2"
+        (click)="submitInspection()"
+        [disabled]="!isFormValid() || isSaving || isSubmitting"
+      >
+        <ng-container *ngIf="!isSubmitting; else submitting">
+          <i class="bi bi-check-circle"></i> Submit
+        </ng-container>
+
+        <ng-template #submitting>
+          <div class="spinner-border spinner-border-sm"></div>
+          <span>Submitting...</span>
+        </ng-template>
+      </button>
+    </div>
   </div>
+</div>
