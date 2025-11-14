@@ -204,16 +204,7 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  getRoleIcon(role: string): string {
-    switch (role) {
-      case 'ADMIN':
-        return 'bi bi-shield-check';
-      case 'TECHNICIAN':
-        return 'bi bi-clipboard-check';
-      default:
-        return 'bi bi-person';
-    }
-  }
+
 
   getStatusBadgeClass(status: string): string {
     switch (status) {
@@ -226,16 +217,7 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  getStatusIcon(status: string): string {
-    switch (status) {
-      case 'ACTIVE':
-        return 'bi bi-check-circle';
-      case 'INACTIVE':
-        return 'bi bi-pause-circle';
-      default:
-        return 'bi bi-question-circle';
-    }
-  }
+
 
   getTimeAgo(date: string): string {
     const now = new Date();

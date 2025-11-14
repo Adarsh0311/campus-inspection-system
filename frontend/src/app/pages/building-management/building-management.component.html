@@ -16,7 +16,7 @@
     </a>
   </div>
 
-    <!-- Filter Bar -->
+  <!-- Filter Bar -->
   <div class="card mb-4">
     <div class="card-body py-3">
       <div class="row g-3 align-items-end">
@@ -26,9 +26,17 @@
             <span class="input-group-text">
               <i class="bi bi-search"></i>
             </span>
-            <input type="text" class="form-control" id="searchFilter" [(ngModel)]="filterBuildingName"
-              (ngModelChange)="filterBuildings()" placeholder="Search by name">
+            <input type="search" class="form-control" id="searchFilter" [(ngModel)]="filterBuildingName" (ngModelChange)="filterBuildings()"
+              placeholder="Search by name">
           </div>
+        </div>
+        <div class="col-md-3">
+          <label for="statusFilter" class="form-label form-label-sm">Filter by Status</label>
+          <select class="form-select" id="statusFilter" [(ngModel)]="selectedStatus" name="statusFilter" (ngModelChange)="filterBuildings()">
+            <option value="">All Status</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
         </div>
         <div class="col-md-2">
           <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
@@ -48,10 +56,7 @@
   </div>
 
   <!-- Loading State -->
-  <app-loading-spinner
-    *ngIf="isLoading"
-    message="Loading buildings..."
-    [height]="300">
+  <app-loading-spinner *ngIf="isLoading" message="Loading buildings..." [height]="300">
   </app-loading-spinner>
 
   <!-- Buildings Table -->
@@ -62,7 +67,7 @@
           <tr>
             <th>Building Name</th>
             <th>Status</th>
-            <th>Checklist Items</th>
+            <th>Data Categories</th>
             <th>Last Updated</th>
             <th>Actions</th>
           </tr>
@@ -80,7 +85,7 @@
               </div>
             </td>
             <td>
-              <span  class="p-2" [ngClass]="building.isActive ? 'badge bg-success' : 'badge bg-danger'">
+              <span class="p-2" [ngClass]="building.isActive ? 'badge bg-success' : 'badge bg-danger'">
                 <!-- <i class="bi bi-check-circle me-1"></i> -->
                 {{ building.isActive ? 'Active' : 'Inactive' }}
               </span>
@@ -95,16 +100,12 @@
             </td>
             <td>
               <div class="d-flex justify-content-left gap-1">
-                <button
-                  class="btn-sm btn btn-success"
-                  [routerLink]="['/buildings/edit', building.id]"
+                <button class="btn-sm btn btn-success" [routerLink]="['/buildings/edit', building.id]"
                   title="Edit building">
                   <!-- <i>Edit</i> -->
                   Edit
                 </button>
-                <button
-                  class="btn-sm btn btn-danger"
-                  (click)="onDeleteBuilding(building.id, building.name)"
+                <button class="btn-sm btn btn-danger" (click)="onDeleteBuilding(building.id, building.name)"
                   title="Deactivate building">
                   <!-- <i class="bi bi-trash"></i> -->
                   Delete
@@ -118,10 +119,7 @@
   </div>
 
   <!-- Empty State -->
-  <app-empty-state
-    *ngIf="!isLoading && filteredBuildings.length === 0"
-    title="No buildings found"
-    message=""
+  <app-empty-state *ngIf="!isLoading && filteredBuildings.length === 0" title="No buildings found" message=""
     icon="bi-building">
   </app-empty-state>
 </div>

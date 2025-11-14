@@ -17,25 +17,31 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-3">
-              <a routerLink="/buildings/new" class="btn btn-outline-primary w-100 py-3">
+              <a routerLink="/buildings/new" class="btn btn-outline-success w-100 py-3">
                 <i class="bi bi-plus-circle d-block mb-2" style="font-size: 1.5rem;"></i>
                 Add Building
               </a>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" >
               <a routerLink="/users/new" class="btn btn-outline-success w-100 py-3">
                 <i class="bi bi-person-plus d-block mb-2" style="font-size: 1.5rem;"></i>
                 Add User
               </a>
             </div>
             <div class="col-md-3">
-              <a routerLink="/buildings" class="btn btn-outline-info w-100 py-3">
+              <a routerLink="/buildings" class="btn btn-outline-success w-100 py-3">
                 <i class="bi bi-list-ul d-block mb-2" style="font-size: 1.5rem;"></i>
                 Manage Buildings
               </a>
             </div>
             <div class="col-md-3">
-              <button class="btn btn-outline-warning w-100 py-3" (click)="generateReport()">
+              <a routerLink="/inspection/history" class="btn btn-outline-success w-100 py-3">
+                <i class="bi bi-card-checklist d-block mb-2" style="font-size: 1.5rem;"></i>
+                Manage Inspection
+              </a>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-success w-100 py-3" (click)="generateReport()">
                 <i class="bi bi-file-earmark-text d-block mb-2" style="font-size: 1.5rem;"></i>
                 Generate Report
               </button>
@@ -46,7 +52,7 @@
     </div>
   </div>
   <!-- Statistics Cards -->
-  <div class="row g-4 mb-5">
+  <!-- <div class="row g-4 mb-5">
     <div class="col-md-3">
       <div class="card h-100 border-0 shadow-sm">
         <div class="card-body text-center">
@@ -98,7 +104,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 </div>

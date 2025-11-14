@@ -1,1 +1,93 @@
-<p>data-category works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div>
+                <h2 class="h4 mb-0">Data Categories Overview</h2>
+                <small class="text-muted">{{ dataCategories.length }} total categories</small>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-primary  p-2" (click)="openModal()">Add New Category</button>
+        </div>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-2">{{ errorMessage }} <span style="float: right;"><button
+                type="button" class="btn-close " (click)="errorMessage=''"></button></span></div>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-lg-4 mt-2 mb-2">
+            <input type="search" class="form-control mt-3" placeholder="Search Categories..."
+                [(ngModel)]="searchCategory" (ngModelChange)="filterCategories()" />
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary" style="position: sticky; top: -1px;">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of dataCategories; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.type }}</td>
+                    <td>{{ category.position }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="deleteCategory(category.id, category.name)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div #modalElement class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div *ngIf="modalErrorMessage" class="alert alert-danger">{{ modalErrorMessage }} <button type="button"
+                        class="btn-close text-end" (click)="modalErrorMessage=''"></button></div>
+                <form (ngSubmit)="createCategory()" #categoryForm="ngForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name</label>
+                        <input type="text" id="name" class="form-control" [(ngModel)]="newCategory.name" name="name"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Category Type</label>
+                        <select id="type" class="form-select" [(ngModel)]="newCategory.type" name="type" required>
+                            <option value="TEXT">Text</option>
+                            <option value="NUMERIC">Numeric</option>
+                            <option value="BOOLEAN">Boolean</option>
+                        </select>
+                    </div>
+                    <!-- <div class="mb-3">
+            <label for="position" class="form-label">Position</label>
+            <input type="number" id="position" class="form-control" [(ngModel)]="newCategory.position" name="position">
+          </div> -->
+                    <button style="float: right;" type="submit" class="btn btn-primary"
+                        [disabled]="categoryForm.invalid">Create Category</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-container {
+        max-height: 70vh;
+        overflow: auto;
+        /* Adds scrollbars if content exceeds the height */
+    }
+</style>

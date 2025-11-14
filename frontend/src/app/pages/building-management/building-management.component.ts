@@ -28,6 +28,7 @@ export class BuildingManagementComponent implements OnInit {
   // For the "Add New" form
   newBuildingName = '';
   newBuildingLocation = '';
+  selectedStatus: string = '';
 
   constructor(private buildingService: BuildingService) { }
 
@@ -47,7 +48,7 @@ export class BuildingManagementComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load buildings. You may not be authorized.';
+        this.errorMessage = err.error?.error || 'Failed to load buildings.';
         this.isLoading = false;
       }
     });
@@ -55,7 +56,7 @@ export class BuildingManagementComponent implements OnInit {
 
   onDeleteBuilding(id: string, name: string): void {
     // Use the browser's confirm dialog for a simple confirmation
-    if (confirm(`Are you sure you want to delete the building "${name}"?`)) {
+    if (confirm(`Are you sure you want to delete (Deactivate) the building "${name}"?`)) {
       this.buildingService.deleteBuilding(id).subscribe({
         next: () => {
           // On success, filter out the deleted building from the local array
@@ -71,14 +72,17 @@ export class BuildingManagementComponent implements OnInit {
   }
 
   filterBuildings() {
+
     // This method can be expanded to implement filtering logic
     this.filteredBuildings = this.buildings.filter(b =>
-      b.name.toLowerCase().includes(this.filterBuildingName.toLowerCase())
+      b.name.toLowerCase().includes(this.filterBuildingName.toLowerCase()) &&
+      (this.selectedStatus === '' || (this.selectedStatus === 'ACTIVE' && b.isActive) || (this.selectedStatus === 'INACTIVE' && !b.isActive))
     );
   }
 
   clearFilters() {
     this.filterBuildingName = '';
+    this.selectedStatus = '';
     this.filteredBuildings = this.buildings;
   }
 

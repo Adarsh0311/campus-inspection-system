@@ -1,8 +1,7 @@
 <h2>Add New Building</h2>
 <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>    
 <form (ngSubmit)="handleSaveBuilding()" #buildingForm="ngForm" class="card p-4">
-  <div class="card bg-light p-3 mb-3">
-    <h5>Building Details</h5>
+  <div class="card bg-light p-2 mb-3">
     <div class="row">
       <div class="mb-3 col-md-6 col-lg-6">
         <label for="buildingName" class="form-label">Building Name</label>
@@ -27,21 +26,19 @@
 
 
   <div class="card bg-light p-3 mb-3">
-    <h6>Data Categories</h6>
-    <ul class="list-group mb-3">
-      <li *ngFor="let item of checklistItems; let i = index"
-        class="list-group-item d-flex justify-content-between align-items-center">
-        <span>{{ item.question }} <span class="badge bg-secondary">{{ item.type }}</span></span>
-        <button type="button" class="btn btn-sm btn-outline-danger" (click)="handleRemoveItem(i)">Remove</button>
-      </li>
-      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No data categories yet.</li>
-    </ul>
-  </div>
-
-  <div class="card bg-light p-3 mb-3">
     <h6>Add New Category</h6>
-    <div class="row g-3 align-items-end">
-      <div class="col-md-6">
+    <div class="col-md-12 row g-3 align-items-end">
+      <select id="newCategory" class="form-select" size="7"
+        [(ngModel)]="selectedCategories" name="newCategory"
+        [multiple]="true">
+        <option value="" disabled selected>Select data category</option>
+        <option *ngFor="let category of getSortedCategories()" [ngValue]="category">{{ category.name }}</option>
+      </select>
+      <div class="col-md-12 mt-2 text-end">
+        <button type="button" class="btn btn-secondary" (click)="handleAddItem()">Add Item</button>
+      </div>
+
+      <!-- <div class="col-md-6">
         <label for="newQuestion" class="form-label">Name</label>
         <input type="text" class="form-control" id="newQuestion" [(ngModel)]="newQuestion" name="newQuestion">
       </div>
@@ -55,8 +52,20 @@
       </div>
       <div class="col-md-2 d-grid">
         <button type="button" class="btn btn-secondary" (click)="handleAddItem()">Add Item</button>
-      </div>
+      </div> -->
     </div>
+  </div>
+
+    <div class="card bg-light p-3 mb-3">
+    <h6>Data Categories</h6>
+    <ul class="list-group mb-3">
+      <li *ngFor="let item of checklistItems; let i = index"
+        class="list-group-item d-flex justify-content-between align-items-center">
+        <span>{{ item.question }}&nbsp;&nbsp;<span class="badge bg-secondary">{{ item.type }}</span></span>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="handleRemoveItem(i)">Remove</button>
+      </li>
+      <li *ngIf="checklistItems.length === 0" class="list-group-item text-muted">No data categories yet.</li>
+    </ul>
   </div>
 
   <div class="d-flex justify-content-end">

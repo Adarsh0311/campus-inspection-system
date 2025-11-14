@@ -45,7 +45,22 @@ async function getBuildingChecklistItems(buildingId) {
 }
 
 async function getAllBuildings() {
-    return prisma.building.findMany({});
+    return prisma.building.findMany({
+        select: {
+            id: true,
+            name: true,
+            location: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+            checklistItems: {
+                select: {
+                _count: true
+                }
+            }
+        },
+        orderBy: {updatedAt: 'desc'}
+    });
 }
 
 async function getAllActiveBuildings() {

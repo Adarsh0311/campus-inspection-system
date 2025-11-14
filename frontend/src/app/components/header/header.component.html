@@ -12,7 +12,7 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       
-      <ul class="ms-5 nav nav-tabs mb-2 mb-lg-0" >
+      <ul class="ms-5 nav nav-pills mb-2 mb-lg-0" >
         <ng-container *ngIf="user.role === 'ADMIN'">
         <li class="nav-item" >
           <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Home</a>
@@ -24,7 +24,10 @@
           <a class="nav-link" routerLink="/users" routerLinkActive="active">User Management</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/inspection/history" routerLinkActive="active">Inspection</a>
+          <a class="nav-link" routerLink="/inspection/history" routerLinkActive="active">Inspections</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/data-categories" routerLinkActive="active">Data Categories</a>
         </li>
         </ng-container>
         <ng-container *ngIf="user.role === 'TECHNICIAN'">

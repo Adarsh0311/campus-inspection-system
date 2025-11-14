@@ -176,3 +176,8 @@
 .text-danger {
   color: var(--danger-color) !important;
 }
+
+.table-container {
+  max-height: 70vh;
+  overflow-y: auto;
+}
