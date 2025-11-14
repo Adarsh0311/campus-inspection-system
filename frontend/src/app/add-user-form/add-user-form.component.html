@@ -27,10 +27,35 @@
                         autocomplete="new-password" class="form-control" [(ngModel)]="password" required>
                 </div>
                 <div class="mb-3 col-md-6 col-lg-6">
-                    <label for="role" class="form-label">Role</label> <span class="required-asterisk">*</span>
-                    <select id="role" name="role" class="form-select" [(ngModel)]="role" required>
-                        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
-                    </select>
+                    <label class="form-label d-block">Role</label>
+                    <div class="d-flex gap-3">
+                    <!-- Hidden input for ngModel binding -->
+                    <input
+                    type="hidden"
+                    id="role"
+                    name="role"
+                    [(ngModel)]="role"
+                    required
+                    />
+
+                    <!-- Admin Button -->
+                    <button
+                    type="button"
+                    class="role-btn"
+                    [class.selected]="role === 'ADMIN'"
+                    (click)="role = 'ADMIN'">
+                    Admin
+                    </button>
+
+                    <!-- Technician Button -->
+                    <button
+                    type="button"
+                    class="role-btn"
+                    [class.selected]="role === 'TECHNICIAN'"
+                    (click)="role = 'TECHNICIAN'">
+                    Technician
+                    </button>
+                    </div>
                 </div>
             </div>
             <!-- <div class="col-lg-3 col-md-3 col-sm-6"> -->

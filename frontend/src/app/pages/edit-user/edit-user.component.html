@@ -26,11 +26,37 @@
             </div> -->
 
             <div class="mb-3 col-md-6 col-lg-6">
-                <label for="role" class="form-label">Role</label>
-                <select [disabled]="currentUser?.userId === user.id" id="role" name="role" class="form-select" [(ngModel)]="user.role" required>
-                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
-                </select>
+                <label class="form-label d-block">Role</label>
+                <div class="d-flex gap-3">
+                    <!-- Hidden input for ngModel binding -->
+                    <input
+                    type="hidden"
+                    id="role"
+                    name="role"
+                    [(ngModel)]="user.role"
+                    required
+                    />
+
+                    <!-- Admin Button -->
+                    <button
+                    type="button"
+                    class="role-btn"
+                    [class.selected]="user.role === 'ADMIN'"
+                    (click)="user.role = 'ADMIN'">
+                    Admin
+                    </button>
+
+                    <!-- Technician Button -->
+                    <button
+                    type="button"
+                    class="role-btn"
+                    [class.selected]="user.role === 'TECHNICIAN'"
+                    (click)="user.role = 'TECHNICIAN'">
+                    Technician
+                    </button>
+                </div>
             </div>
+
             <div class="mb-3 col-md-6 col-lg-6">
                 <label for="status" class="form-label">Status</label>
                 <select [disabled]="currentUser?.userId === user.id" id="status" name="status" class="form-select" [(ngModel)]="user.isActive" required>
