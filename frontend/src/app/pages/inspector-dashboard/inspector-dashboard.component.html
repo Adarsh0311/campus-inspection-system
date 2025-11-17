@@ -4,10 +4,10 @@
     <div class="container">
       <div class="welcome-section">
         <h1 class="welcome-title">
-          {{ getGreeting() }}, {{ currentUser?.firstName || 'Inspector' }}! 👋
+          {{ getGreeting() }}, {{ currentUser?.firstName || 'Inspector' }}!
         </h1>
         <p class="welcome-subtitle">
-          Ready to start your campus inspections for {{ Date() | date:'fullDate' }}
+          Inspections Date: {{ Date() | date:'fullDate' }}
         </p>
       </div>
     </div>
@@ -20,7 +20,7 @@
 
         <!-- Start Inspection Card -->
         <div class="col-lg-4 col-md-6">
-          <div class="action-card start-inspection-card" (click)="onStartInspectionClick()">
+          <div class="action-card" (click)="onStartInspectionClick()">
             <div class="card-icon">
               <i class="bi bi-clipboard-plus"></i>
             </div>
@@ -36,7 +36,7 @@
 
         <!-- View History Card -->
         <div class="col-lg-4 col-md-6">
-          <div class="action-card view-history-card" (click)="onViewHistoryClick()">
+          <div class="action-card" (click)="onViewHistoryClick()">
             <div class="card-icon">
               <i class="bi bi-clock-history"></i>
             </div>
@@ -52,7 +52,7 @@
 
         <!-- All Buildings Card -->
         <div class="col-lg-4 col-md-6">
-          <div class="action-card all-buildings-card" (click)="onAllBuildingsClick()">
+          <div class="action-card" (click)="onAllBuildingsClick()">
             <div class="card-icon">
               <i class="bi bi-buildings"></i>
             </div>
