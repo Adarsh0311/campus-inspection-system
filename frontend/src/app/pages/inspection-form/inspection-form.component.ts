@@ -201,12 +201,7 @@ export class InspectionFormComponent implements OnInit {
   }
 
   navigateBack() {
-    // Navigate based on user role
-    if (this.currentUser?.role === 'ADMIN') {
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.router.navigate(['/inspector-dashboard']);
-    }
+    window.history.back();
   }
 
   getQuestionIcon(type: string): string {

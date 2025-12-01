@@ -1,6 +1,4 @@
-<app-page-header
-  title="Campus Inspection Dashboard"
-  subtitle="Overview of buildings, inspections, and users">
+<app-page-header title="Campus Inspection Dashboard" subtitle="Overview of buildings, inspections, and users">
 </app-page-header>
 
 <div class="container">
@@ -22,7 +20,7 @@
                 Add Building
               </a>
             </div>
-            <div class="col-md-3" >
+            <div class="col-md-3">
               <a routerLink="/users/new" class="btn btn-outline-success w-100 py-3">
                 <i class="bi bi-person-plus d-block mb-2" style="font-size: 1.5rem;"></i>
                 Add User
@@ -41,7 +39,7 @@
               </a>
             </div>
             <div class="col-md-3">
-              <button class="btn btn-outline-success w-100 py-3" (click)="generateReport()">
+              <button class="btn btn-outline-success w-100 py-3" (click)="showModal()">
                 <i class="bi bi-file-earmark-text d-block mb-2" style="font-size: 1.5rem;"></i>
                 Generate Report
               </button>
@@ -51,60 +49,41 @@
       </div>
     </div>
   </div>
-  <!-- Statistics Cards -->
-  <!-- <div class="row g-4 mb-5">
-    <div class="col-md-3">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body text-center">
-          <div class="bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-               style="width: 60px; height: 60px;">
-            <i class="bi bi-building text-primary" style="font-size: 1.5rem;"></i>
-          </div>
-          <h3 class="h2 mb-1 text-primary">{{ totalBuildings }}</h3>
-          <p class="text-muted mb-0">Total Buildings</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body text-center">
-          <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-               style="width: 60px; height: 60px;">
-            <i class="bi bi-check-circle text-success" style="font-size: 1.5rem;"></i>
-          </div>
-          <h3 class="h2 mb-1 text-success">{{ completedInspections }}</h3>
-          <p class="text-muted mb-0">Completed Inspections</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body text-center">
-          <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-               style="width: 60px; height: 60px;">
-            <i class="bi bi-clock text-warning" style="font-size: 1.5rem;"></i>
-          </div>
-          <h3 class="h2 mb-1 text-warning">{{ pendingInspections }}</h3>
-          <p class="text-muted mb-0">Pending Inspections</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body text-center">
-          <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-               style="width: 60px; height: 60px;">
-            <i class="bi bi-people text-info" style="font-size: 1.5rem;"></i>
-          </div>
-          <h3 class="h2 mb-1 text-info">{{ totalUsers }}</h3>
-          <p class="text-muted mb-0">Active Users</p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-
 </div>
+
+
+<!-- Generate report modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+              <label for="startDate" class="form-label">Buildings</label>
+              <select size="7" class="form-control" id="buildingIds" [(ngModel)]="buildingIds" name="buildingIds" multiple>
+                  <option value="All">All Buildings</option>
+                  <option *ngFor="let building of recentBuildings" [value]="building.id">{{ building.name }}</option>
+              </select>
+          </div>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startDate" [(ngModel)]="startDate" name="startDate">
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endDate" [(ngModel)]="endDate" name="endDate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="generateReport()">Generate</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Generate report modal -->

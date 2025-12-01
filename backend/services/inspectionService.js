@@ -53,8 +53,13 @@ async function getInspectionHistoryByBuildingAndDateRange(buildingId, startDate,
         select: {
             id: true,
             userId: true,
-            buildingId: true,
             date: true,
+            buildingId: true,
+            building: {
+                select: {
+                    name: true,
+                }
+            },
             user: {
                 select: {
                     firstName: true,

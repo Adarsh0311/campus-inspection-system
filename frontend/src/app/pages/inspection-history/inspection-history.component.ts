@@ -45,8 +45,11 @@ export class InspectionHistoryComponent {
     this.loadUsers();
     this.route.queryParams.subscribe(params => {
       this.selectedBuildingId = params['buildingId'] || '';
+      this.userId = params['userId'] || 'All';
+      this.startDate = params['startDate'] || '';
+      this.endDate = params['endDate'] || '';
       if (this.selectedBuildingId) {
-        this.searchInspections();
+        this.loadData();
       }
     });
   }
@@ -95,6 +98,15 @@ export class InspectionHistoryComponent {
 
     this.setFilterRange();
     //this.updateQueryParams();
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { buildingId: this.selectedBuildingId, userId: this.userId, startDate: this.startDate, endDate: this.endDate },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  loadData(): void {
     this.loadBuildingChecklistItems(this.selectedBuildingId);
     this.inspectionService.getInspectionsByBuildingWithDateRange(this.selectedBuildingId, this.userId, this.startDate, this.endDate).subscribe({
       next: (data) => {
@@ -220,7 +232,7 @@ export class InspectionHistoryComponent {
     this.startInspectionModal.show();
   }
 
-    // Modal Event Handlers
+  // Modal Event Handlers
   onInspectionStarted(data: { buildingId: string; buildingName: string; date: string }) {
     // Navigate to inspection form with the selected data
     this.router.navigate(['/inspection/form'], {

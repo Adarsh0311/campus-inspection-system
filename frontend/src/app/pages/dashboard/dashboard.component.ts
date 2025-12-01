@@ -7,6 +7,13 @@ import { PageHeaderComponent } from '../../components/page-header/page-header.co
 import { LoadingSpinnerComponent } from '../../components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
 import {UserService} from "../../services/user.service";
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { timeout } from 'rxjs';
+import { environment } from '../../environment.development';
+import { AuthService } from '../../services/auth.service';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +23,8 @@ import {UserService} from "../../services/user.service";
     RouterModule,
     PageHeaderComponent,
     LoadingSpinnerComponent,
-    EmptyStateComponent
+    EmptyStateComponent,
+    FormsModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -32,16 +40,38 @@ export class DashboardComponent implements OnInit {
   recentBuildings: any[] = [];
   isLoadingBuildings: boolean = true;
 
-  constructor(private buildingService: BuildingService, private userService: UserService) {}
+  startDate: string = '';
+  endDate: string = '';
+  buildingIds: string[] = ['All'];
+
+  private modalInstance: any;
+
+  constructor(private buildingService: BuildingService, private userService: UserService, private http: HttpClient, private auth: AuthService) {}
 
   ngOnInit() {
     this.loadDashboardData();
+    this.initializeModal();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.initializeModal();
+    }, 100);
+    
+  }
+
+  initializeModal() {
+        //initialize bootstrap modal
+    var reportModalEl = document.getElementById('reportModal');
+    if (reportModalEl) {
+      this.modalInstance = new bootstrap.Modal(reportModalEl);
+    }
   }
 
   loadDashboardData() {
-    this.getUsersCount();
+    //this.getUsersCount();
     this.loadBuildings();
-    this.loadStatistics();
+    //this.loadStatistics();
   }
 
   loadBuildings() {
@@ -50,14 +80,10 @@ export class DashboardComponent implements OnInit {
     this.buildingService.getAllBuildings().subscribe({
       next: (buildings) => {
         this.totalBuildings = buildings.length;
-        // Get the 5 most recent buildings
-        this.recentBuildings = buildings
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 5);
-        this.isLoadingBuildings = false;
+        this.recentBuildings = buildings;
       },
-      error: (error) => {
-        console.error('Error loading buildings:', error);
+      error: (err: any) => {
+        console.error('Error loading buildings:', err);
         this.isLoadingBuildings = false;
       }
     });
@@ -80,9 +106,47 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  showModal() {
+    if (this.modalInstance) {
+      this.modalInstance.show();
+    } 
+  }
+
   generateReport() {
-    // Implement report generation logic
-    console.log('Generating report...');
-    alert('Report generation feature coming soon!');
+
+    if (!this.startDate || !this.endDate) {
+      alert('Please select both start and end dates for the report.');
+      return;
+    }
+
+    const body = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      buildingIds: this.buildingIds
+    };
+
+
+    const url = environment.baseUrl + '/report';
+    this.http.post(url, body, { responseType: 'blob', headers: { Authorization: `Bearer ${this.auth.getToken()}` } }).subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `inspection-report-${this.startDate}-to-${this.endDate}.xlsx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        console.log('Report downloaded successfully');
+
+        this.modalInstance.hide();
+
+      },
+      error: (error) => {
+        console.error('Error generating report:', error);
+        alert('Error generating report');
+      }
+    });
   }
 }

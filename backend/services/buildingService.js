@@ -149,6 +149,14 @@ async function updateBuilding(id, updatedBuildingData) {
     });
 }
 
+
+async function getAllBuildingIds() {
+    const buildings = await prisma.building.findMany({
+        select: {id: true}
+    });
+    return buildings.map(b => b.id);
+}
+
 module.exports = {
-    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding, getBuildingChecklistItems, getAllActiveBuildings
+    createBuildingWithChecklist, getAllBuildings, getBuildingById, deleteBuilding, updateBuilding, getBuildingChecklistItems, getAllActiveBuildings, getAllBuildingIds
 }

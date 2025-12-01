@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 
-const PORT = 3000;
+
 
 const userRoute = require('./routes/userRoute');
 const buildingRoute = require('./routes/buildingRoute');
 const authRoute = require('./routes/authRoute');
 const inspectionRoute = require('./routes/inspectionRoute');
 const dataCategoryRoute = require('./routes/dataCategoryRoute');
+const { generateReport } = require('./services/reportHandler');
 
 const { authMiddleware, adminMiddleware } = require('./middleware/authMiddleware');
 
@@ -34,13 +35,16 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoute);
-
 app.use(authMiddleware);
 
 app.use('/api/users', userRoute);
 app.use('/api/buildings', buildingRoute);
 app.use('/api/inspections', inspectionRoute);
 app.use('/api/data-categories', dataCategoryRoute);
+
+app.post('/api/report', adminMiddleware, generateReport);
+
+
 
 
 
@@ -79,7 +83,7 @@ async function testUser() {
     }
 }
 
-
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log('Server is running on port: ' + PORT);
