@@ -28,7 +28,7 @@ app.use(express.urlencoded({extended: true}));
 
 // test route
 app.get('/', (req, res) => {
-    res.send('<h1>Campus Inspection System API is running...</h1>');
+    res.send('<h1> Campus Inspection System API is running... Github actions </h1>');
 });
 
 
