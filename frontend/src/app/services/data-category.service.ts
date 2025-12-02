@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DataCategory, DataCategoryRequest } from '../models/data-category.model';
 import { AuthService } from './auth.service';
 import { Data } from '@angular/router';
-import { environment } from '../environment.development';
+import { environment } from '../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'

@@ -10,7 +10,7 @@ import {UserService} from "../../services/user.service";
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { timeout } from 'rxjs';
-import { environment } from '../../environment.development';
+import { environment } from '../../environments/environment.development';
 import { AuthService } from '../../services/auth.service';
 
 declare var bootstrap: any;
