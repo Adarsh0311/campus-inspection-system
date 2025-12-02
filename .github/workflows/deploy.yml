@@ -2,7 +2,9 @@ name: Deploy Monorepo to EC2
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
+    paths:
+      - 'backend/**'
 
 
 jobs:
@@ -39,7 +41,7 @@ jobs:
             host: ${{ secrets.EC2_HOST }}
             username: ${{ secrets.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
-            source: "./*"
+            source: "./backend/**"
             target: "/home/ec2-user/backend/"  
 
 
