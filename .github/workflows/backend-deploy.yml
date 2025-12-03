@@ -1,4 +1,4 @@
-name: Deploy Monorepo to EC2
+name: Deploy NodeJs Backend to EC2
 
 on:
   push:
