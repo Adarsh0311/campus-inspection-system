@@ -30,7 +30,7 @@ jobs:
             username: ${{ secrets.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             source: "./backend/**"
-            target: ${{ secrets.EC2_TARGET_PATH }}
+            target: "/home/ec2-user/"  
 
 
         - name: Restart Backend on EC2
