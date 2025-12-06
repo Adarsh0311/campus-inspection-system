@@ -1,8 +1,32 @@
-# Campus Inspection System
+## 🚀 Campus Inspection System
 
-This project is a full-stack web application designed to digitize and streamline campus facility inspections, replacing a manual paper-based workflow.
+A scalable full-stack web application that digitizes and streamlines campus facility inspections. The platform enables technicians to record inspection data (water pressure, gas levels, equipment status, etc.) through a modern UI and automatically generates building-level reports — eliminating outdated paper-based processes.
 
-The backend is a Node.js API built with Express.js and Prisma, connected to a PostgreSQL database. The frontend is a single-page application built with Angular.
+The system includes:
+
+- A responsive Angular SPA for technicians and administrators
+
+- A secure Node.js/Express API with Prisma ORM
+
+- A PostgreSQL database
+
+- A fully deployed AWS architecture supporting CI/CD and zero-downtime updates
+
+---
+
+## 🌟 Features
+
+✔ Digitizes campus inspection workflows
+
+✔ Role-based authentication (JWT)
+
+✔ Dynamic inspection checklists for admins
+
+✔ Technician-friendly form UI
+
+✔ Auto-generated building-level inspection reports
+
+✔ Secure, scalable deployment using AWS
 
 ---
 
@@ -10,9 +34,44 @@ The backend is a Node.js API built with Express.js and Prisma, connected to a Po
 
 | Area | Technology |
 | :--- | :--- |
-| **Backend** | Node.js, Express.js, Prisma ORM, PostgreSQL |
+| **Backend** | Node.js, Express.js, Prisma ORM |
 | **Frontend** | Angular, TypeScript, Bootstrap |
+| **Database** | PostgreSQL |
+| **Cloud** | AWS S3, CloudFront, EC2 |
+| **CI/CD** | GitHub Actions |
 | **Package Manager**| npm |
+
+---
+
+## ☁️ Cloud Architecture
+
+The system is deployed using a cloud-optimized, production-grade architecture:
+
+### Frontend
+
+- Hosted on Amazon S3 (static hosting)
+
+- Delivered globally through CloudFront CDN
+
+
+### Backend
+
+- Deployed on EC2 (Amazon Linux 2)
+
+- Runs Node.js API + Prisma + PM2 process manager
+
+- Connected to PostgreSQL 
+
+
+### CI/CD
+
+A GitHub Actions pipeline automates deployment:
+
+- On push → build
+
+- SSH into EC2 → pull latest backend → npm install → Prisma generate → restart PM2
+
+- Achieves zero-downtime deployments
 
 ---
 
@@ -84,3 +143,31 @@ Navigate to the frontend directory from the root and install dependencies:
   ng serve
 ```
 This will start the Angular development server. The application will be accessible at http://localhost:4200.
+
+---
+
+## 🚀 Deployment (AWS Overview)
+### Frontend Deployment
+
+1. Build an Angular project
+
+2. Upload to S3
+
+3. Configure CloudFront distribution
+
+4. Update invalidations on each deployment
+
+### Backend Deployment
+
+1. Launch EC2 instance
+
+2. Install Node, Git, PM2
+
+3. Pull backend repo from GitHub
+
+4. Start the server with PM2
+
+5. Configure reverse proxy (Nginx)
+
+### CI/CD Workflow
+Backend → SSH into EC2 + auto-update + PM2 reload
