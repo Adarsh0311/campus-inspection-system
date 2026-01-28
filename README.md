@@ -29,6 +29,12 @@ The system includes:
 ✔ Secure, scalable deployment using AWS
 
 ---
+## 🏗️ System Architecture
+
+![System Architecture](docs/Architecture.jpeg)
+
+
+---
 
 ## Tech Stack
 
@@ -37,7 +43,7 @@ The system includes:
 | **Backend** | Node.js, Express.js, Prisma ORM |
 | **Frontend** | Angular, TypeScript, Bootstrap |
 | **Database** | PostgreSQL |
-| **Cloud** | AWS S3, CloudFront, EC2 |
+| **Cloud** | AWS S3, CloudFront, EC2, RDS |
 | **CI/CD** | GitHub Actions |
 | **Package Manager**| npm |
 
